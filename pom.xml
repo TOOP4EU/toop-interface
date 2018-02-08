@@ -2,11 +2,82 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.helger</groupId>
+    <artifactId>parent-pom</artifactId>
+    <version>1.10.0</version>
+  </parent>
+  <groupId>eu.toop</groupId>
+  <artifactId>toop-dc-interface</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+  <name>toop-dc-interface</name>
+  <url>https://github.com/toop4eu/toop-dc-interface</url>
+  <inceptionYear>2018</inceptionYear>
+ 
+  <licenses>
+    <license>
+      <name>Apache 2</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  
+  <scm>
+    <connection>scm:git:git@github.com:toop4eu/toop-dc-interface.git</connection>
+    <developerConnection>scm:git:git@github.com:toop4eu/toop-dc-interface.git</developerConnection>
+    <url>http://github.com/toop4eu/toop-dc-interface</url>
+    <tag>HEAD</tag>
+  </scm>
 
-    <groupId>eu.toop</groupId>
-    <artifactId>dc-interface</artifactId>
-    <version>0.1</version>
+  <organization>
+    <name>toop.eu</name>
+    <url>http://www.toop.eu</url>
+  </organization>
 
+  <developers>
+    <developer>
+      <id>ixuz</id>
+      <name>Anton Wiklund</name>
+    </developer>
+  </developers>
+  
+  <dependencyManagement>
+    <dependencies>
+      <!-- Import all BOMs -->
+      <dependency>
+        <groupId>eu.toop</groupId>
+        <artifactId>toop-commons-parent-pom</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+        <scope>import</scope>
+        <type>pom</type>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 
+  <dependencies>
+    <!-- We always need SLF4J as logging facade -->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+    </dependency>
+
+    <!-- JUnit 5 for testing -->
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <!-- The following 2 are required for Eclipse 4.7.x integration -->
+    <dependency>
+      <groupId>org.junit.platform</groupId>
+      <artifactId>junit-platform-launcher</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
 </project>

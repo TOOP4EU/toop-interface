@@ -1,4 +1,4 @@
-package eu.toop;
+package eu.toop.dc;
 
 public class DCInterface {
     
