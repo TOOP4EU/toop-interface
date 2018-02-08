@@ -56,6 +56,11 @@
   </dependencyManagement>
 
   <dependencies>
+    <dependency>
+      <groupId>eu.toop</groupId>
+      <artifactId>toop-kafka-client</artifactId>
+    </dependency>
+  
     <!-- We always need SLF4J as logging facade -->
     <dependency>
       <groupId>org.slf4j</groupId>
