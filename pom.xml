@@ -99,7 +99,7 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>eu.toop.dc.DCInterface</mainClass>
+              <mainClass>eu.toop.iface.MainInterface</mainClass>
             </manifest>
           </archive>
           <descriptorRefs>
