@@ -9,10 +9,10 @@
     <version>1.10.0</version>
   </parent>
   <groupId>eu.toop</groupId>
-  <artifactId>toop-dc-interface</artifactId>
+  <artifactId>toop-interface</artifactId>
   <version>1.0.0-SNAPSHOT</version>
-  <name>toop-dc-interface</name>
-  <url>https://github.com/toop4eu/toop-dc-interface</url>
+  <name>toop-interface</name>
+  <url>https://github.com/toop4eu/toop-interface</url>
   <inceptionYear>2018</inceptionYear>
  
   <licenses>
@@ -24,9 +24,9 @@
   </licenses>
   
   <scm>
-    <connection>scm:git:git@github.com:toop4eu/toop-dc-interface.git</connection>
-    <developerConnection>scm:git:git@github.com:toop4eu/toop-dc-interface.git</developerConnection>
-    <url>http://github.com/toop4eu/toop-dc-interface</url>
+    <connection>scm:git:git@github.com:toop4eu/toop-interface.git</connection>
+    <developerConnection>scm:git:git@github.com:toop4eu/toop-interface.git</developerConnection>
+    <url>http://github.com/toop4eu/toop-interface</url>
     <tag>HEAD</tag>
   </scm>
 

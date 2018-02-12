@@ -1,4 +1,4 @@
-# toop-dc-interface
+# toop-interface
 
 # Compile
 mvn clean compile assembly:single
