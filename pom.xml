@@ -60,10 +60,6 @@
       <groupId>eu.toop</groupId>
       <artifactId>toop-kafka-client</artifactId>
     </dependency>
-    <dependency>
-      <groupId>com.helger</groupId>
-      <artifactId>ph-commons</artifactId>
-    </dependency>
   
     <dependency>
       <groupId>javax.servlet</groupId>
