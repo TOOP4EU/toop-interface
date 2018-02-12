@@ -61,6 +61,12 @@
       <artifactId>toop-kafka-client</artifactId>
     </dependency>
   
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <scope>provided</scope>
+    </dependency>
+  
     <!-- We always need SLF4J as logging facade -->
     <dependency>
       <groupId>org.slf4j</groupId>
