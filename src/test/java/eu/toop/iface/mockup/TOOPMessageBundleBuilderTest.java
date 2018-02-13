@@ -34,7 +34,7 @@ public class TOOPMessageBundleBuilderTest {
             TOOPMessageBundle bundle = bundleBuilder.parse(archiveInput);
 
             assertTrue(bundle.getMsDataRequest().identifier.equals("ABC123"), "MSDataRequest arrived safely");
-            assertTrue(bundle.getMsDataRequest().identifier.equals("DEF456"), "MSDataRequest arrived safely");
+            assertTrue(bundle.getToopDataRequest().identifier.equals("DEF456"), "TOOPDataRequest arrived safely");
         } catch (IOException e) {
             e.printStackTrace();
         }
