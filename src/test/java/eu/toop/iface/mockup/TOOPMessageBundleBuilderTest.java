@@ -1,42 +1,34 @@
 package eu.toop.iface.mockup;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.Test;
+
+import com.helger.commons.io.stream.NonBlockingByteArrayInputStream;
+import com.helger.commons.io.stream.NonBlockingByteArrayOutputStream;
 
 public class TOOPMessageBundleBuilderTest {
-    @Test
-    public void testTOOPMessagebundleBuilder () {
+	@Test
+	public void testTOOPMessagebundleBuilder() throws IOException {
+		final File keystore = new File("src/test/resources/demo-keystore.jks");
+		final String keystorePassword = "password";
+		final String keystoreKeyPassword = "password";
 
-        File keystore = new File("src/test/resources/demo-keystore.jks");
-        String keystorePassword = "password";
-        String keystoreKeyPassword = "password";
+		try (final NonBlockingByteArrayOutputStream archiveOutput = new NonBlockingByteArrayOutputStream()) {
+			new TOOPMessageBundleBuilder().setMSDataRequest(new MSDataRequest("ABC123"))
+					.setTOOPDataRequest(new TOOPDataRequest("DEF456"))
+					.sign(archiveOutput, keystore, keystorePassword, keystoreKeyPassword);
+			archiveOutput.flush();
 
-        ByteArrayOutputStream archiveOutput = new ByteArrayOutputStream();
-        try {
-            TOOPMessageBundle bundle = new TOOPMessageBundleBuilder()
-                    .setMSDataRequest(new MSDataRequest("ABC123"))
-                    .setTOOPDataRequest(new TOOPDataRequest("DEF456"))
-                    .sign(archiveOutput, keystore, keystorePassword, keystoreKeyPassword);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+			try (final NonBlockingByteArrayInputStream archiveInput = archiveOutput.getAsInputStream()) {
+				final TOOPMessageBundle bundleRead = new TOOPMessageBundleBuilder().parse(archiveInput);
 
-        ByteArrayInputStream archiveInput = new ByteArrayInputStream(archiveOutput.toByteArray());
-        try {
-            TOOPMessageBundleBuilder bundleBuilder = new TOOPMessageBundleBuilder();
-            TOOPMessageBundle bundle = bundleBuilder.parse(archiveInput);
-
-            assertTrue(bundle.getMsDataRequest().identifier.equals("ABC123"), "MSDataRequest arrived safely");
-            assertTrue(bundle.getMsDataRequest().identifier.equals("DEF456"), "MSDataRequest arrived safely");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+				assertTrue(bundleRead.getMsDataRequest().identifier.equals("ABC123"), "MSDataRequest arrived safely");
+				assertTrue(bundleRead.getToopDataRequest().identifier.equals("DEF456"), "ToopDataRequest arrived safely");
+			}
+		}
+	}
 }
