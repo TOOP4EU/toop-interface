@@ -27,7 +27,8 @@ public class TOOPMessageBundleBuilderTest {
 				final TOOPMessageBundle bundleRead = new TOOPMessageBundleBuilder().parse(archiveInput);
 
 				assertTrue(bundleRead.getMsDataRequest().identifier.equals("ABC123"), "MSDataRequest arrived safely");
-				assertTrue(bundleRead.getToopDataRequest().identifier.equals("DEF456"), "ToopDataRequest arrived safely");
+				assertTrue(bundleRead.getToopDataRequest().identifier.equals("DEF456"),
+						"ToopDataRequest arrived safely");
 			}
 		}
 	}
