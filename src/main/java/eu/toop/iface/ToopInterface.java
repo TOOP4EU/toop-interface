@@ -1,45 +1,42 @@
 package eu.toop.iface;
 
-import eu.toop.iface.mockup.MSDataRequest;
-import eu.toop.iface.mockup.TOOPDataRequest;
-import eu.toop.iface.mockup.TOOPMessageBundle;
-import no.difi.asic.AsicWriter;
-import no.difi.asic.AsicWriterFactory;
-import org.apache.commons.lang3.SerializationUtils;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.annotation.concurrent.ThreadSafe;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
+import com.helger.commons.concurrent.SimpleReadWriteLock;
 
+@ThreadSafe
 public class ToopInterface {
+	private static final SimpleReadWriteLock s_aRWLock = new SimpleReadWriteLock();
+	private static ITOOPInterfaceDC _interfaceDC;
+	private static ITOOPInterfaceDP _interfaceDP;
 
-    static ITOOPInterfaceDC interfaceDC;
-    static ITOOPInterfaceDP interfaceDP;
+	private ToopInterface() {
+	}
 
-    public static void sendTOOPMessageBundle(TOOPMessageBundle bundle) throws IOException {
-        System.out.println("Trying to send a bundle");
-    }
+	@Nonnull
+	public static ITOOPInterfaceDC getInterfaceDC() throws IllegalStateException {
+		final ITOOPInterfaceDC ret = s_aRWLock.readLocked(() -> _interfaceDC);
+		if (ret == null) {
+			throw new IllegalStateException("No DC interface present!");
+		}
+		return ret;
+	}
 
-    public static ITOOPInterfaceDC getInterfaceDC() throws IllegalStateException {
-        if (interfaceDC == null) {
-            throw new IllegalStateException();
-        }
-        return interfaceDC;
-    }
+	public static void setInterfaceDC(@Nullable final ITOOPInterfaceDC interfaceDC) {
+		s_aRWLock.writeLocked(() -> _interfaceDC = interfaceDC);
+	}
 
-    public static void setInterfaceDC(ITOOPInterfaceDC interfaceDC) {
-        ToopInterface.interfaceDC = interfaceDC;
-    }
-
-    public static ITOOPInterfaceDP getInterfaceDP() throws IllegalStateException {
-        if (interfaceDP == null) {
-            throw new IllegalStateException();
-        }
-        return interfaceDP;
-    }
-
-    public static void setInterfaceDP(ITOOPInterfaceDP interfaceDP) {
-        ToopInterface.interfaceDP = interfaceDP;
-    }
+	@Nonnull
+	public static ITOOPInterfaceDP getInterfaceDP() throws IllegalStateException {
+		final ITOOPInterfaceDP ret = s_aRWLock.readLocked(() -> _interfaceDP);
+		if (ret == null) {
+			throw new IllegalStateException("No DP interface present!");
+		}
+		return ret;
+	}
+	public static void setInterfaceDP(@Nullable final ITOOPInterfaceDP interfaceDP) {
+		s_aRWLock.writeLocked(() -> _interfaceDP = interfaceDP);
+	}
 }
