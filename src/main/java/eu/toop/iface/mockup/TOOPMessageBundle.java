@@ -7,7 +7,9 @@ package eu.toop.iface.mockup;
 public class TOOPMessageBundle {
 
     private MSDataRequest msDataRequest;
+    private MSDataResponse msDataResponse;
     private TOOPDataRequest toopDataRequest;
+    private TOOPDataResponse toopDataResponse;
 
     public MSDataRequest getMsDataRequest() {
         return msDataRequest;
@@ -17,11 +19,27 @@ public class TOOPMessageBundle {
         this.msDataRequest = msDataRequest;
     }
 
+    public MSDataResponse getMsDataResponse() {
+        return msDataResponse;
+    }
+
+    public void setMsDataResponse(MSDataResponse msDataResponse) {
+        this.msDataResponse = msDataResponse;
+    }
+
     public TOOPDataRequest getToopDataRequest() {
         return toopDataRequest;
     }
 
     public void setToopDataRequest(TOOPDataRequest toopDataRequest) {
         this.toopDataRequest = toopDataRequest;
+    }
+
+    public TOOPDataResponse getToopDataResponse() {
+        return toopDataResponse;
+    }
+
+    public void setToopDataResponse(TOOPDataResponse toopDataResponse) {
+        this.toopDataResponse = toopDataResponse;
     }
 }
