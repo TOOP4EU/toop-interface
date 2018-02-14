@@ -20,7 +20,7 @@ public final class SendToMPClient {
 		aHCFactory.setUseSystemProperties(true);
 
 		try (final HttpClientManager aMgr = new HttpClientManager(aHCFactory)) {
-			final HttpPost aPost = new HttpPost("http://example.org");
+			final HttpPost aPost = new HttpPost("http://localhost:8080/interface/dc");
 			aPost.setEntity(new ByteArrayEntity(aDataTosend));
 
 			// Assume response is XML
