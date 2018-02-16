@@ -5,6 +5,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public interface ITOOPInterfaceDC {
+public interface IToopInterfaceDC {
     void doPost(final HttpServletRequest req, final HttpServletResponse resp) throws ServletException, IOException;
 }

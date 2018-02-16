@@ -18,15 +18,15 @@ public class TOOPMessageBundleBuilderTest {
 		final String keystoreKeyPassword = "password";
 
 		try (final NonBlockingByteArrayOutputStream archiveOutput = new NonBlockingByteArrayOutputStream()) {
-			new TOOPMessageBundleBuilder().setMSDataRequest(new MSDataRequest("ABC123"))
-					.setTOOPDataRequest(new TOOPDataRequest("DEF456"))
+			new ToopMessageBundleBuilder().setMSDataRequest(new MSDataRequest("ABC123"))
+					.setTOOPDataRequest(new ToopDataRequest("DEF456"))
 					.setMSDataResponse(new MSDataResponse("AAA111"))
-					.setTOOPDataResponse(new TOOPDataResponse("BBB222"))
+					.setTOOPDataResponse(new ToopDataResponse("BBB222"))
 					.sign(archiveOutput, keystore, keystorePassword, keystoreKeyPassword);
 			archiveOutput.flush();
 
 			try (final NonBlockingByteArrayInputStream archiveInput = archiveOutput.getAsInputStream()) {
-				final TOOPMessageBundle bundleRead = new TOOPMessageBundleBuilder().parse(archiveInput);
+				final ToopMessageBundle bundleRead = new ToopMessageBundleBuilder().parse(archiveInput);
 
 				assertTrue(bundleRead.getMsDataRequest().identifier.equals("ABC123"),
 						"MSDataRequest did not arrive safely");

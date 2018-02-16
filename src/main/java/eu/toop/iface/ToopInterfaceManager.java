@@ -7,36 +7,36 @@ import javax.annotation.concurrent.ThreadSafe;
 import com.helger.commons.concurrent.SimpleReadWriteLock;
 
 @ThreadSafe
-public class ToopInterface {
+public class ToopInterfaceManager {
 	private static final SimpleReadWriteLock s_aRWLock = new SimpleReadWriteLock();
-	private static ITOOPInterfaceDC _interfaceDC;
-	private static ITOOPInterfaceDP _interfaceDP;
+	private static IToopInterfaceDC _interfaceDC;
+	private static IToopInterfaceDP _interfaceDP;
 
-	private ToopInterface() {
+	private ToopInterfaceManager() {
 	}
 
 	@Nonnull
-	public static ITOOPInterfaceDC getInterfaceDC() throws IllegalStateException {
-		final ITOOPInterfaceDC ret = s_aRWLock.readLocked(() -> _interfaceDC);
+	public static IToopInterfaceDC getInterfaceDC() throws IllegalStateException {
+		final IToopInterfaceDC ret = s_aRWLock.readLocked(() -> _interfaceDC);
 		if (ret == null) {
 			throw new IllegalStateException("No DC interface present!");
 		}
 		return ret;
 	}
 
-	public static void setInterfaceDC(@Nullable final ITOOPInterfaceDC interfaceDC) {
+	public static void setInterfaceDC(@Nullable final IToopInterfaceDC interfaceDC) {
 		s_aRWLock.writeLocked(() -> _interfaceDC = interfaceDC);
 	}
 
 	@Nonnull
-	public static ITOOPInterfaceDP getInterfaceDP() throws IllegalStateException {
-		final ITOOPInterfaceDP ret = s_aRWLock.readLocked(() -> _interfaceDP);
+	public static IToopInterfaceDP getInterfaceDP() throws IllegalStateException {
+		final IToopInterfaceDP ret = s_aRWLock.readLocked(() -> _interfaceDP);
 		if (ret == null) {
 			throw new IllegalStateException("No DP interface present!");
 		}
 		return ret;
 	}
-	public static void setInterfaceDP(@Nullable final ITOOPInterfaceDP interfaceDP) {
+	public static void setInterfaceDP(@Nullable final IToopInterfaceDP interfaceDP) {
 		s_aRWLock.writeLocked(() -> _interfaceDP = interfaceDP);
 	}
 }

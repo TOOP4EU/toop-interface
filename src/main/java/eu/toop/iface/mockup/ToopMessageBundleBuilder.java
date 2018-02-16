@@ -14,34 +14,34 @@ import com.helger.commons.io.stream.NonBlockingByteArrayOutputStream;
 import com.helger.commons.mime.CMimeType;
 import com.helger.commons.serialize.SerializationHelper;
 
-public class TOOPMessageBundleBuilder {
-	private final TOOPMessageBundle toopMessageBundle;
+public class ToopMessageBundleBuilder {
+	private final ToopMessageBundle toopMessageBundle;
 
-	public TOOPMessageBundleBuilder() {
-		this.toopMessageBundle = new TOOPMessageBundle();
+	public ToopMessageBundleBuilder() {
+		this.toopMessageBundle = new ToopMessageBundle();
 	}
 
-	public TOOPMessageBundleBuilder setMSDataRequest(final MSDataRequest msDataRequest) {
+	public ToopMessageBundleBuilder setMSDataRequest(final MSDataRequest msDataRequest) {
 		this.toopMessageBundle.setMsDataRequest(msDataRequest);
 		return this;
 	}
 
-	public TOOPMessageBundleBuilder setMSDataResponse(final MSDataResponse msDataResponse) {
+	public ToopMessageBundleBuilder setMSDataResponse(final MSDataResponse msDataResponse) {
 		this.toopMessageBundle.setMsDataResponse(msDataResponse);
 		return this;
 	}
 
-	public TOOPMessageBundleBuilder setTOOPDataRequest(final TOOPDataRequest toopDataRequest) {
+	public ToopMessageBundleBuilder setTOOPDataRequest(final ToopDataRequest toopDataRequest) {
 		this.toopMessageBundle.setToopDataRequest(toopDataRequest);
 		return this;
 	}
 
-	public TOOPMessageBundleBuilder setTOOPDataResponse(final TOOPDataResponse toopDataResponse) {
+	public ToopMessageBundleBuilder setTOOPDataResponse(final ToopDataResponse toopDataResponse) {
 		this.toopMessageBundle.setToopDataResponse(toopDataResponse);
 		return this;
 	}
 
-	public TOOPMessageBundle sign(final OutputStream archiveOutput, final File keystoreFile,
+	public ToopMessageBundle sign(final OutputStream archiveOutput, final File keystoreFile,
 								  final String keystorePassword, final String keyPassword) throws IOException {
 
 		final AsicWriterFactory asicWriterFactory = AsicWriterFactory.newFactory();
@@ -78,7 +78,7 @@ public class TOOPMessageBundleBuilder {
 		return toopMessageBundle;
 	}
 
-	public TOOPMessageBundle parse(final InputStream archiveInput) throws IOException {
+	public ToopMessageBundle parse(final InputStream archiveInput) throws IOException {
 		try (final IAsicReader asicReader = AsicReaderFactory.newFactory().open(archiveInput)) {
 			String entryName;
 			while ((entryName = asicReader.getNextFile()) != null) {
@@ -99,14 +99,14 @@ public class TOOPMessageBundleBuilder {
 				} else if (entryName.equals("TOOPDataRequest")) {
 					try (final NonBlockingByteArrayOutputStream bos = new NonBlockingByteArrayOutputStream()) {
 						asicReader.writeFile(bos);
-						final TOOPDataRequest toopDataRequest = (TOOPDataRequest) SerializationHelper
+						final ToopDataRequest toopDataRequest = (ToopDataRequest) SerializationHelper
 								.getDeserializedObject(bos.toByteArray());
 						toopMessageBundle.setToopDataRequest(toopDataRequest);
 					}
 				} else if (entryName.equals("TOOPDataResponse")) {
 					try (final NonBlockingByteArrayOutputStream bos = new NonBlockingByteArrayOutputStream()) {
 						asicReader.writeFile(bos);
-						final TOOPDataResponse toopDataResponse = (TOOPDataResponse) SerializationHelper
+						final ToopDataResponse toopDataResponse = (ToopDataResponse) SerializationHelper
 								.getDeserializedObject(bos.toByteArray());
 						toopMessageBundle.setToopDataResponse(toopDataResponse);
 					}

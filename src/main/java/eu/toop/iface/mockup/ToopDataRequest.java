@@ -6,10 +6,10 @@ package eu.toop.iface.mockup;
 
 import java.io.Serializable;
 
-public class TOOPDataRequest implements Serializable {
+public class ToopDataRequest implements Serializable {
     public String identifier;
 
-    public TOOPDataRequest(String identifier) {
+    public ToopDataRequest(String identifier) {
         this.identifier = identifier;
     }
 }
