@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.io.File;
 import java.io.IOException;
 
+import eu.toop.commons.*;
 import org.junit.jupiter.api.Test;
 
 import com.helger.commons.io.stream.NonBlockingByteArrayInputStream;
