@@ -8,8 +8,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class ToopInterfaceServletDP extends HttpServlet {
-    @Override
-    protected void doPost(final HttpServletRequest req, final HttpServletResponse resp) throws ServletException, IOException {
-        ToopInterfaceManager.getInterfaceDP().doPost(req, resp);
-    }
+  @Override
+  protected void doPost(final HttpServletRequest req, final HttpServletResponse resp)
+      throws ServletException, IOException {
+    ToopInterfaceManager.getInterfaceDP().doPost(req, resp);
+  }
 }
