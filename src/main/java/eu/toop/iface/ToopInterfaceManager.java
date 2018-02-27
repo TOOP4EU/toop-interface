@@ -84,7 +84,7 @@ public class ToopInterfaceManager {
       ToopMessageBuilder.createRequestMessage (msDataRequest, archiveOutput, aSH);
 
       // Send to DC (see DCInputServlet in toop-mp-webapp)
-      final String destinationUrl = "http://mp.elonia.toop:8083/dcinput";
+      final String destinationUrl = ToopInterfaceConfig.getDCInputUrl ();
       HttpClientInvoker.httpClientCallNoResponse (destinationUrl, archiveOutput.toByteArray ());
     }
   }
