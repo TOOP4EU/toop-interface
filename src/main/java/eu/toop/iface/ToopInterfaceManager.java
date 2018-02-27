@@ -19,7 +19,21 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.ThreadSafe;
 
+import com.helger.asic.SignatureHelper;
+import com.helger.commons.collection.impl.CommonsArrayList;
 import com.helger.commons.concurrent.SimpleReadWriteLock;
+import com.helger.commons.io.file.FileHelper;
+import com.helger.commons.io.stream.NonBlockingByteArrayOutputStream;
+import eu.toop.commons.doctype.EToopDocumentType;
+import eu.toop.commons.doctype.EToopProcess;
+import eu.toop.commons.exchange.RequestValue;
+import eu.toop.commons.exchange.message.ToopMessageBuilder;
+import eu.toop.commons.exchange.mock.MSDataRequest;
+import eu.toop.iface.mockup.client.HttpClientInvoker;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
 
 @ThreadSafe
 public class ToopInterfaceManager {
@@ -54,5 +68,35 @@ public class ToopInterfaceManager {
 
   public static void setInterfaceDP(@Nullable final IToopInterfaceDP interfaceDP) {
     s_aRWLock.writeLocked(() -> _interfaceDP = interfaceDP);
+  }
+
+  public static void requestConcepts(List<String> conceptList) {
+    File keystoreFile = new File ("src/main/resources/demo-keystore.jks");
+
+    final SignatureHelper aSH = new SignatureHelper (FileHelper.getInputStream (keystoreFile),
+      "password",
+      null,
+      "password");
+
+    try (final NonBlockingByteArrayOutputStream archiveOutput = new NonBlockingByteArrayOutputStream ()) {
+
+      CommonsArrayList<RequestValue> commonsArrayList = new CommonsArrayList<> ();
+      for (String concept : conceptList) {
+        commonsArrayList.add(new RequestValue (concept, null));
+      }
+
+      MSDataRequest msDataRequest = new MSDataRequest ("toop::sender", "DE",
+        EToopDocumentType.DOCTYPE3.getURIEncoded (),
+        EToopProcess.PROC.getURIEncoded (),
+        commonsArrayList);
+
+      ToopMessageBuilder.createRequestMessage (msDataRequest, archiveOutput, aSH);
+
+      // Send to DC (see DCInputServlet in toop-mp-webapp)
+      String destinationUrl = "http://mp.elonia.toop:8083/dcinput";
+      HttpClientInvoker.httpClientCallNoResponse (destinationUrl, archiveOutput.toByteArray ());
+    } catch (IOException e) {
+      e.printStackTrace ();
+    }
   }
 }
