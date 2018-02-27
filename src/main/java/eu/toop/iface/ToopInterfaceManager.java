@@ -71,10 +71,12 @@ public class ToopInterfaceManager {
   }
 
   public static void requestConcepts (final List<ConceptValue> conceptList) throws IOException {
-    final File keystoreFile = new File ("src/main/resources/demo-keystore.jks");
+    final File keystoreFile = new File (ToopInterfaceConfig.getKeystorePath ());
 
-    final SignatureHelper aSH = new SignatureHelper (FileHelper.getInputStream (keystoreFile), "password", null,
-                                                     "password");
+    final SignatureHelper aSH = new SignatureHelper (FileHelper.getInputStream (keystoreFile),
+                                                     ToopInterfaceConfig.getKeystorePassword (),
+                                                     ToopInterfaceConfig.getKeystoreKeyAlias (),
+                                                     ToopInterfaceConfig.getKeystoreKeyPassword ());
 
     try (final NonBlockingByteArrayOutputStream archiveOutput = new NonBlockingByteArrayOutputStream ()) {
       final MSDataRequest msDataRequest = new MSDataRequest ("toop::sender", "DE",

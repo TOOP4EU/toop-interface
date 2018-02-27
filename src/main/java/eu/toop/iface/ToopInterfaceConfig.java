@@ -106,4 +106,24 @@ public final class ToopInterfaceConfig {
   public static String getDCInputUrl () {
     return getConfigFile ().getAsString ("toop.dcinput.url");
   }
+
+  @Nullable
+  public static String getKeystorePath () {
+    return getConfigFile ().getAsString ("toop.keystore.path");
+  }
+
+  @Nullable
+  public static String getKeystorePassword () {
+    return getConfigFile ().getAsString ("toop.keystore.password");
+  }
+
+  @Nullable
+  public static String getKeystoreKeyAlias () {
+    return getConfigFile ().getAsString ("toop.keystore.key.alias");
+  }
+
+  @Nullable
+  public static String getKeystoreKeyPassword () {
+    return getConfigFile ().getAsString ("toop.keystore.key.password");
+  }
 }
