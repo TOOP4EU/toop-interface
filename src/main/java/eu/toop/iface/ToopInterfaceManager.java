@@ -24,14 +24,13 @@ import javax.annotation.Nullable;
 import javax.annotation.concurrent.ThreadSafe;
 
 import com.helger.asic.SignatureHelper;
-import com.helger.commons.collection.impl.CommonsArrayList;
 import com.helger.commons.concurrent.SimpleReadWriteLock;
 import com.helger.commons.io.file.FileHelper;
 import com.helger.commons.io.stream.NonBlockingByteArrayOutputStream;
 
+import eu.toop.commons.concept.ConceptValue;
 import eu.toop.commons.doctype.EToopDocumentType;
 import eu.toop.commons.doctype.EToopProcess;
-import eu.toop.commons.exchange.RequestValue;
 import eu.toop.commons.exchange.message.ToopMessageBuilder;
 import eu.toop.commons.exchange.mock.MSDataRequest;
 import eu.toop.iface.mockup.client.HttpClientInvoker;
@@ -71,18 +70,16 @@ public class ToopInterfaceManager {
     s_aRWLock.writeLocked ( () -> _interfaceDP = interfaceDP);
   }
 
-  public static void requestConcepts (final List<String> conceptList) throws IOException {
+  public static void requestConcepts (final List<ConceptValue> conceptList) throws IOException {
     final File keystoreFile = new File ("src/main/resources/demo-keystore.jks");
 
     final SignatureHelper aSH = new SignatureHelper (FileHelper.getInputStream (keystoreFile), "password", null,
                                                      "password");
 
     try (final NonBlockingByteArrayOutputStream archiveOutput = new NonBlockingByteArrayOutputStream ()) {
-      final List<RequestValue> aList = new CommonsArrayList<> (conceptList, x -> new RequestValue (x, null));
-
       final MSDataRequest msDataRequest = new MSDataRequest ("toop::sender", "DE",
                                                              EToopDocumentType.DOCTYPE3.getURIEncoded (),
-                                                             EToopProcess.PROC.getURIEncoded (), aList);
+                                                             EToopProcess.PROC.getURIEncoded (), conceptList);
 
       ToopMessageBuilder.createRequestMessage (msDataRequest, archiveOutput, aSH);
 
