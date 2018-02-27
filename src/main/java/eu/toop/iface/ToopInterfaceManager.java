@@ -71,26 +71,24 @@ public class ToopInterfaceManager {
     s_aRWLock.writeLocked ( () -> _interfaceDP = interfaceDP);
   }
 
-  public static void requestConcepts (final List<String> conceptList) {
+  public static void requestConcepts (final List<String> conceptList) throws IOException {
     final File keystoreFile = new File ("src/main/resources/demo-keystore.jks");
 
     final SignatureHelper aSH = new SignatureHelper (FileHelper.getInputStream (keystoreFile), "password", null,
                                                      "password");
 
     try (final NonBlockingByteArrayOutputStream archiveOutput = new NonBlockingByteArrayOutputStream ()) {
-      final List<RequestValue> commonsArrayList = new CommonsArrayList<> (conceptList, x -> new RequestValue (x, null));
+      final List<RequestValue> aList = new CommonsArrayList<> (conceptList, x -> new RequestValue (x, null));
 
       final MSDataRequest msDataRequest = new MSDataRequest ("toop::sender", "DE",
                                                              EToopDocumentType.DOCTYPE3.getURIEncoded (),
-                                                             EToopProcess.PROC.getURIEncoded (), commonsArrayList);
+                                                             EToopProcess.PROC.getURIEncoded (), aList);
 
       ToopMessageBuilder.createRequestMessage (msDataRequest, archiveOutput, aSH);
 
       // Send to DC (see DCInputServlet in toop-mp-webapp)
       final String destinationUrl = "http://mp.elonia.toop:8083/dcinput";
       HttpClientInvoker.httpClientCallNoResponse (destinationUrl, archiveOutput.toByteArray ());
-    } catch (final IOException e) {
-      e.printStackTrace ();
     }
   }
 }
