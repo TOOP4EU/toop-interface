@@ -15,11 +15,21 @@
  */
 package eu.toop.iface;
 
+import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
+import eu.toop.commons.dataexchange.TDETOOPDataRequestType;
+
+/**
+ * This interface must be implemented by DP receiving components to retrieve
+ * incoming requests (step 2/4). The content of the request is an ASiC archive
+ * containing a {@link TDETOOPDataRequestType}.
+ *
+ * @author Anton
+ */
 public interface IToopInterfaceDP {
-  void doPost(final HttpServletRequest req, final HttpServletResponse resp) throws ServletException, IOException;
+  void doPost (final HttpServletRequest req, final HttpServletResponse resp) throws ServletException, IOException;
 }

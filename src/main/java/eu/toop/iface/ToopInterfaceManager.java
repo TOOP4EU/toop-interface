@@ -29,10 +29,10 @@ import com.helger.commons.io.file.FileHelper;
 import com.helger.commons.io.stream.NonBlockingByteArrayOutputStream;
 
 import eu.toop.commons.concept.ConceptValue;
+import eu.toop.commons.dataexchange.TDETOOPDataRequestType;
 import eu.toop.commons.doctype.EToopDocumentType;
 import eu.toop.commons.doctype.EToopProcess;
-import eu.toop.commons.exchange.message.ToopMessageBuilder;
-import eu.toop.commons.exchange.mock.MSDataRequest;
+import eu.toop.commons.exchange.ToopMessageBuilder;
 import eu.toop.iface.mockup.client.HttpClientInvoker;
 
 @ThreadSafe
@@ -70,6 +70,14 @@ public class ToopInterfaceManager {
     s_aRWLock.writeLocked ( () -> _interfaceDP = interfaceDP);
   }
 
+  /**
+   * Execute step 1/4
+   * 
+   * @param conceptList
+   *          list of concepts to be queried
+   * @throws IOException
+   *           in case of HTTP error
+   */
   public static void requestConcepts (final List<ConceptValue> conceptList) throws IOException {
     final File keystoreFile = new File (ToopInterfaceConfig.getKeystorePath ());
 
@@ -79,9 +87,10 @@ public class ToopInterfaceManager {
                                                      ToopInterfaceConfig.getKeystoreKeyPassword ());
 
     try (final NonBlockingByteArrayOutputStream archiveOutput = new NonBlockingByteArrayOutputStream ()) {
-      final MSDataRequest msDataRequest = new MSDataRequest ("toop::sender", "DE",
-                                                             EToopDocumentType.DOCTYPE3.getURIEncoded (),
-                                                             EToopProcess.PROC.getURIEncoded (), conceptList);
+      final TDETOOPDataRequestType msDataRequest = ToopMessageBuilder.createMockRequest ("toop::sender", "DE",
+                                                                                         EToopDocumentType.DOCTYPE3.getURIEncoded (),
+                                                                                         EToopProcess.PROC.getURIEncoded (),
+                                                                                         conceptList);
 
       ToopMessageBuilder.createRequestMessage (msDataRequest, archiveOutput, aSH);
 
