@@ -17,9 +17,7 @@ package eu.toop.iface;
 
 import java.io.IOException;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.annotation.Nonnull;
 
 import eu.toop.commons.dataexchange.TDETOOPDataRequestType;
 
@@ -29,7 +27,16 @@ import eu.toop.commons.dataexchange.TDETOOPDataRequestType;
  * containing a {@link TDETOOPDataRequestType}.
  *
  * @author Anton
+ * @author Philip Helger
  */
 public interface IToopInterfaceDP {
-  void doPost (final HttpServletRequest req, final HttpServletResponse resp) throws ServletException, IOException;
+  /**
+   * Invoked every time a TOOP Request Message is received
+   *
+   * @param aRequest
+   *          Message object. Never <code>null</code>.
+   * @throws IOException
+   *           in case of processing errors
+   */
+  void onToopRequest (@Nonnull TDETOOPDataRequestType aRequest) throws IOException;
 }
