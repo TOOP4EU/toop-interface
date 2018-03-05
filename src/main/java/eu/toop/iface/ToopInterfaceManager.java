@@ -15,7 +15,6 @@
  */
 package eu.toop.iface;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -25,7 +24,7 @@ import javax.annotation.concurrent.ThreadSafe;
 
 import com.helger.asic.SignatureHelper;
 import com.helger.commons.concurrent.SimpleReadWriteLock;
-import com.helger.commons.io.file.FileHelper;
+import com.helger.commons.io.resourceprovider.DefaultResourceProvider;
 import com.helger.commons.io.stream.NonBlockingByteArrayOutputStream;
 
 import eu.toop.commons.concept.ConceptValue;
@@ -72,16 +71,14 @@ public class ToopInterfaceManager {
 
   /**
    * Execute step 1/4
-   * 
+   *
    * @param conceptList
    *          list of concepts to be queried
    * @throws IOException
    *           in case of HTTP error
    */
   public static void requestConcepts (final List<ConceptValue> conceptList) throws IOException {
-    final File keystoreFile = new File (ToopInterfaceConfig.getKeystorePath ());
-
-    final SignatureHelper aSH = new SignatureHelper (FileHelper.getInputStream (keystoreFile),
+    final SignatureHelper aSH = new SignatureHelper (new DefaultResourceProvider ().getInputStream (ToopInterfaceConfig.getKeystorePath ()),
                                                      ToopInterfaceConfig.getKeystorePassword (),
                                                      ToopInterfaceConfig.getKeystoreKeyAlias (),
                                                      ToopInterfaceConfig.getKeystoreKeyPassword ());
