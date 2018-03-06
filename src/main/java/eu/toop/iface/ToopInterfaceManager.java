@@ -85,8 +85,8 @@ public class ToopInterfaceManager {
 
     try (final NonBlockingByteArrayOutputStream archiveOutput = new NonBlockingByteArrayOutputStream ()) {
       final TDETOOPDataRequestType msDataRequest = ToopMessageBuilder.createMockRequest ("toop::sender", "DE",
-                                                                                         EToopDocumentType.DOCTYPE3.getURIEncoded (),
-                                                                                         EToopProcess.PROC.getURIEncoded (),
+                                                                                         EToopDocumentType.DOCTYPE_REGISTERED_ORGANIZATION_REQUEST,
+                                                                                         EToopProcess.PROCESS_REQUEST_RESPONSE,
                                                                                          conceptList);
 
       ToopMessageBuilder.createRequestMessage (msDataRequest, archiveOutput, aSH);
