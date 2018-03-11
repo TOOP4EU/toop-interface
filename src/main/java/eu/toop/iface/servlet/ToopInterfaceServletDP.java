@@ -19,6 +19,7 @@ import java.io.IOException;
 
 import javax.annotation.Nonnull;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,6 +31,7 @@ import eu.toop.commons.dataexchange.TDETOOPDataRequestType;
 import eu.toop.commons.exchange.ToopMessageBuilder;
 import eu.toop.iface.ToopInterfaceManager;
 
+@WebServlet ("/to-dp")
 public class ToopInterfaceServletDP extends HttpServlet {
   private static final Logger s_aLogger = LoggerFactory.getLogger (ToopInterfaceServletDP.class);
 
