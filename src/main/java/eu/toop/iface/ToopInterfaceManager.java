@@ -32,7 +32,7 @@ import eu.toop.commons.dataexchange.TDETOOPDataRequestType;
 import eu.toop.commons.doctype.EToopDocumentType;
 import eu.toop.commons.doctype.EToopProcess;
 import eu.toop.commons.exchange.ToopMessageBuilder;
-import eu.toop.iface.mockup.client.HttpClientInvoker;
+import eu.toop.iface.util.HttpClientInvoker;
 
 @ThreadSafe
 public class ToopInterfaceManager {
