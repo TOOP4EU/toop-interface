@@ -103,8 +103,13 @@ public final class ToopInterfaceConfig {
   }
 
   @Nullable
-  public static String getDCInputUrl () {
-    return getConfigFile ().getAsString ("toop.dcinput.url");
+  public static String getToopConnectorDCUrl () {
+    return getConfigFile ().getAsString ("toop.connector.dc.url");
+  }
+
+  @Nullable
+  public static String getToopConnectorDPUrl () {
+    return getConfigFile ().getAsString ("toop.connector.dp.url");
   }
 
   @Nullable

@@ -27,6 +27,7 @@ import org.junit.jupiter.api.Test;
 public class ToopInterfaceConfigTest {
   @Test
   public void testBasic () {
-    assertEquals ("http://mp.elonia.toop:8083/dcinput", ToopInterfaceConfig.getDCInputUrl ());
+    assertEquals ("http://mp.elonia.toop:8083/from-dc", ToopInterfaceConfig.getToopConnectorDCUrl ());
+    assertEquals ("http://mp.elonia.toop:8083/from-dp", ToopInterfaceConfig.getToopConnectorDPUrl ());
   }
 }

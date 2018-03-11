@@ -91,8 +91,8 @@ public class ToopInterfaceManager {
 
       ToopMessageBuilder.createRequestMessage (msDataRequest, archiveOutput, aSH);
 
-      // Send to DC (see DCInputServlet in toop-mp-webapp)
-      final String destinationUrl = ToopInterfaceConfig.getDCInputUrl ();
+      // Send to DC (see DCInputServlet in toop-connector-webapp)
+      final String destinationUrl = ToopInterfaceConfig.getToopConnectorDCUrl ();
       HttpClientInvoker.httpClientCallNoResponse (destinationUrl, archiveOutput.toByteArray ());
     }
   }
