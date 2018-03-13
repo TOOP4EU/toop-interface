@@ -58,11 +58,11 @@ public final class ToopInterfaceClient {
    * @throws IOException
    *           in case of HTTP error
    */
-  public static void createRequestAndSendToToopCoonnector (@Nonnull @Nonempty final String sSenderParticipantID,
-                                                           @Nonnull @Nonempty final String sCountryCode,
-                                                           @Nonnull final EToopDocumentType eDocumentTypeID,
-                                                           @Nonnull final EToopProcess eProcessID,
-                                                           @Nullable final List<? extends ConceptValue> conceptList) throws IOException {
+  public static void createRequestAndSendToToopConnector (@Nonnull @Nonempty final String sSenderParticipantID,
+                                                          @Nonnull @Nonempty final String sCountryCode,
+                                                          @Nonnull final EToopDocumentType eDocumentTypeID,
+                                                          @Nonnull final EToopProcess eProcessID,
+                                                          @Nullable final List<? extends ConceptValue> conceptList) throws IOException {
     final SignatureHelper aSH = new SignatureHelper (new DefaultResourceProvider ().getInputStream (ToopInterfaceConfig.getKeystorePath ()),
                                                      ToopInterfaceConfig.getKeystorePassword (),
                                                      ToopInterfaceConfig.getKeystoreKeyAlias (),
@@ -89,7 +89,7 @@ public final class ToopInterfaceClient {
    * @throws IOException
    *           In case sending or the like fails
    */
-  public static void sendResponseToToopCoonnector (@Nonnull final TDETOOPDataResponseType aResponse) throws IOException {
+  public static void sendResponseToToopConnector (@Nonnull final TDETOOPDataResponseType aResponse) throws IOException {
     final SignatureHelper aSH = new SignatureHelper (new DefaultResourceProvider ().getInputStream (ToopInterfaceConfig.getKeystorePath ()),
                                                      ToopInterfaceConfig.getKeystorePassword (),
                                                      ToopInterfaceConfig.getKeystoreKeyAlias (),
