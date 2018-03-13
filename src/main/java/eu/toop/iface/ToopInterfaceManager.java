@@ -15,38 +15,30 @@
  */
 package eu.toop.iface;
 
-import java.io.IOException;
-import java.util.List;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.ThreadSafe;
 
-import com.helger.asic.SignatureHelper;
-import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.concurrent.SimpleReadWriteLock;
-import com.helger.commons.io.resourceprovider.DefaultResourceProvider;
-import com.helger.commons.io.stream.NonBlockingByteArrayOutputStream;
 
-import eu.toop.commons.concept.ConceptValue;
-import eu.toop.commons.dataexchange.TDETOOPDataRequestType;
-import eu.toop.commons.doctype.EToopDocumentType;
-import eu.toop.commons.doctype.EToopProcess;
-import eu.toop.commons.exchange.ToopMessageBuilder;
-import eu.toop.iface.util.HttpClientInvoker;
-
+/**
+ * This class only contains the callback interfaces for DC/DP. They must be
+ * assigned once on applicaiton startup.
+ *
+ * @author Philip Helger
+ */
 @ThreadSafe
-public class ToopInterfaceManager {
+public final class ToopInterfaceManager {
   private static final SimpleReadWriteLock s_aRWLock = new SimpleReadWriteLock ();
-  private static IToopInterfaceDC _interfaceDC;
-  private static IToopInterfaceDP _interfaceDP;
+  private static IToopInterfaceDC s_aInterfaceDC;
+  private static IToopInterfaceDP s_aInterfaceDP;
 
   private ToopInterfaceManager () {
   }
 
   @Nonnull
   public static IToopInterfaceDC getInterfaceDC () throws IllegalStateException {
-    final IToopInterfaceDC ret = s_aRWLock.readLocked ( () -> _interfaceDC);
+    final IToopInterfaceDC ret = s_aRWLock.readLocked ( () -> s_aInterfaceDC);
     if (ret == null) {
       throw new IllegalStateException ("No DC interface present!");
     }
@@ -54,12 +46,12 @@ public class ToopInterfaceManager {
   }
 
   public static void setInterfaceDC (@Nullable final IToopInterfaceDC interfaceDC) {
-    s_aRWLock.writeLocked ( () -> _interfaceDC = interfaceDC);
+    s_aRWLock.writeLocked ( () -> s_aInterfaceDC = interfaceDC);
   }
 
   @Nonnull
   public static IToopInterfaceDP getInterfaceDP () throws IllegalStateException {
-    final IToopInterfaceDP ret = s_aRWLock.readLocked ( () -> _interfaceDP);
+    final IToopInterfaceDP ret = s_aRWLock.readLocked ( () -> s_aInterfaceDP);
     if (ret == null) {
       throw new IllegalStateException ("No DP interface present!");
     }
@@ -67,47 +59,6 @@ public class ToopInterfaceManager {
   }
 
   public static void setInterfaceDP (@Nullable final IToopInterfaceDP interfaceDP) {
-    s_aRWLock.writeLocked ( () -> _interfaceDP = interfaceDP);
-  }
-
-  /**
-   * Execute step 1/4
-   *
-   * @param sSenderParticipantID
-   *          Participant ID of the sender as used by R2D2. May not be
-   *          <code>null</code>.
-   * @param sCountryCode
-   *          Destination country code ID (as in "SE"). May not be
-   *          <code>null</code>.
-   * @param eDocumentTypeID
-   *          Document type ID to request. May not be <code>null</code>.
-   * @param eProcessID
-   *          Process ID to request. May not be <code>null</code>.
-   * @param conceptList
-   *          list of concepts to be queried
-   * @throws IOException
-   *           in case of HTTP error
-   */
-  public static void requestConcepts (@Nonnull @Nonempty final String sSenderParticipantID,
-                                      @Nonnull @Nonempty final String sCountryCode,
-                                      @Nonnull final EToopDocumentType eDocumentTypeID,
-                                      @Nonnull final EToopProcess eProcessID,
-                                      @Nullable final List<? extends ConceptValue> conceptList) throws IOException {
-    final SignatureHelper aSH = new SignatureHelper (new DefaultResourceProvider ().getInputStream (ToopInterfaceConfig.getKeystorePath ()),
-                                                     ToopInterfaceConfig.getKeystorePassword (),
-                                                     ToopInterfaceConfig.getKeystoreKeyAlias (),
-                                                     ToopInterfaceConfig.getKeystoreKeyPassword ());
-
-    try (final NonBlockingByteArrayOutputStream archiveOutput = new NonBlockingByteArrayOutputStream ()) {
-      final TDETOOPDataRequestType msDataRequest = ToopMessageBuilder.createMockRequest (sSenderParticipantID,
-                                                                                         sCountryCode, eDocumentTypeID,
-                                                                                         eProcessID, conceptList);
-
-      ToopMessageBuilder.createRequestMessage (msDataRequest, archiveOutput, aSH);
-
-      // Send to DC (see DCInputServlet in toop-connector-webapp)
-      final String destinationUrl = ToopInterfaceConfig.getToopConnectorDCUrl ();
-      HttpClientInvoker.httpClientCallNoResponse (destinationUrl, archiveOutput.toByteArray ());
-    }
+    s_aRWLock.writeLocked ( () -> s_aInterfaceDP = interfaceDP);
   }
 }
