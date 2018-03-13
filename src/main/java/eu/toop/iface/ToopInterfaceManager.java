@@ -23,6 +23,7 @@ import javax.annotation.Nullable;
 import javax.annotation.concurrent.ThreadSafe;
 
 import com.helger.asic.SignatureHelper;
+import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.concurrent.SimpleReadWriteLock;
 import com.helger.commons.io.resourceprovider.DefaultResourceProvider;
 import com.helger.commons.io.stream.NonBlockingByteArrayOutputStream;
@@ -72,23 +73,35 @@ public class ToopInterfaceManager {
   /**
    * Execute step 1/4
    *
+   * @param sSenderParticipantID
+   *          Participant ID of the sender as used by R2D2. May not be
+   *          <code>null</code>.
+   * @param sCountryCode
+   *          Destination country code ID (as in "SE"). May not be
+   *          <code>null</code>.
+   * @param eDocumentTypeID
+   *          Document type ID to request. May not be <code>null</code>.
+   * @param eProcessID
+   *          Process ID to request. May not be <code>null</code>.
    * @param conceptList
    *          list of concepts to be queried
    * @throws IOException
    *           in case of HTTP error
    */
-  public static void requestConcepts (final List<ConceptValue> conceptList) throws IOException {
+  public static void requestConcepts (@Nonnull @Nonempty final String sSenderParticipantID,
+                                      @Nonnull @Nonempty final String sCountryCode,
+                                      @Nonnull final EToopDocumentType eDocumentTypeID,
+                                      @Nonnull final EToopProcess eProcessID,
+                                      @Nullable final List<? extends ConceptValue> conceptList) throws IOException {
     final SignatureHelper aSH = new SignatureHelper (new DefaultResourceProvider ().getInputStream (ToopInterfaceConfig.getKeystorePath ()),
                                                      ToopInterfaceConfig.getKeystorePassword (),
                                                      ToopInterfaceConfig.getKeystoreKeyAlias (),
                                                      ToopInterfaceConfig.getKeystoreKeyPassword ());
 
     try (final NonBlockingByteArrayOutputStream archiveOutput = new NonBlockingByteArrayOutputStream ()) {
-      final TDETOOPDataRequestType msDataRequest = ToopMessageBuilder.createMockRequest ("iso6523-actorid-upis::9999:freedonia",
-                                                                                         "SV",
-                                                                                         EToopDocumentType.DOCTYPE_REGISTERED_ORGANIZATION_REQUEST,
-                                                                                         EToopProcess.PROCESS_REQUEST_RESPONSE,
-                                                                                         conceptList);
+      final TDETOOPDataRequestType msDataRequest = ToopMessageBuilder.createMockRequest (sSenderParticipantID,
+                                                                                         sCountryCode, eDocumentTypeID,
+                                                                                         eProcessID, conceptList);
 
       ToopMessageBuilder.createRequestMessage (msDataRequest, archiveOutput, aSH);
 
