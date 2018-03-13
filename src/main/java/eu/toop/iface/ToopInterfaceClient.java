@@ -34,6 +34,7 @@ import eu.toop.commons.doctype.EToopDocumentType;
 import eu.toop.commons.doctype.EToopProcess;
 import eu.toop.commons.exchange.ToopMessageBuilder;
 import eu.toop.iface.util.HttpClientInvoker;
+import oasis.names.specification.ubl.schema.xsd.unqualifieddatatypes_21.IdentifierType;
 
 @ThreadSafe
 public final class ToopInterfaceClient {
@@ -43,10 +44,10 @@ public final class ToopInterfaceClient {
   /**
    * Execute step 1/4
    *
-   * @param sSenderParticipantID
+   * @param aSenderParticipantID
    *          Participant ID of the sender as used by R2D2. May not be
    *          <code>null</code>.
-   * @param sCountryCode
+   * @param sDestCountryCode
    *          Destination country code ID (as in "SE"). May not be
    *          <code>null</code>.
    * @param eDocumentTypeID
@@ -58,8 +59,8 @@ public final class ToopInterfaceClient {
    * @throws IOException
    *           in case of HTTP error
    */
-  public static void createRequestAndSendToToopConnector (@Nonnull @Nonempty final String sSenderParticipantID,
-                                                          @Nonnull @Nonempty final String sCountryCode,
+  public static void createRequestAndSendToToopConnector (@Nonnull @Nonempty final IdentifierType aSenderParticipantID,
+                                                          @Nonnull @Nonempty final String sDestCountryCode,
                                                           @Nonnull final EToopDocumentType eDocumentTypeID,
                                                           @Nonnull final EToopProcess eProcessID,
                                                           @Nullable final List<? extends ConceptValue> conceptList) throws IOException {
@@ -69,7 +70,7 @@ public final class ToopInterfaceClient {
                                                      ToopInterfaceConfig.getKeystoreKeyPassword ());
 
     try (final NonBlockingByteArrayOutputStream aBAOS = new NonBlockingByteArrayOutputStream ()) {
-      final TDETOOPDataRequestType aRequest = ToopMessageBuilder.createMockRequest (sSenderParticipantID, sCountryCode,
+      final TDETOOPDataRequestType aRequest = ToopMessageBuilder.createMockRequest (aSenderParticipantID, sDestCountryCode,
                                                                                     eDocumentTypeID, eProcessID,
                                                                                     conceptList);
 
@@ -83,7 +84,7 @@ public final class ToopInterfaceClient {
 
   /**
    * Create a response, wrap it in an ASiC and send it to DP TOOP Connector
-   * 
+   *
    * @param aResponse
    *          Response object
    * @throws IOException
