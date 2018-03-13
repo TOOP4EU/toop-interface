@@ -84,7 +84,8 @@ public class ToopInterfaceManager {
                                                      ToopInterfaceConfig.getKeystoreKeyPassword ());
 
     try (final NonBlockingByteArrayOutputStream archiveOutput = new NonBlockingByteArrayOutputStream ()) {
-      final TDETOOPDataRequestType msDataRequest = ToopMessageBuilder.createMockRequest ("iso6523-actorid-upis::9999:freedonia", "SV",
+      final TDETOOPDataRequestType msDataRequest = ToopMessageBuilder.createMockRequest ("iso6523-actorid-upis::9999:freedonia",
+                                                                                         "SV",
                                                                                          EToopDocumentType.DOCTYPE_REGISTERED_ORGANIZATION_REQUEST,
                                                                                          EToopProcess.PROCESS_REQUEST_RESPONSE,
                                                                                          conceptList);
