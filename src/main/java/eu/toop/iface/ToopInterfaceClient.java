@@ -69,9 +69,9 @@ public final class ToopInterfaceClient {
                                                      ToopInterfaceConfig.getKeystoreKeyPassword ());
 
     try (final NonBlockingByteArrayOutputStream aBAOS = new NonBlockingByteArrayOutputStream ()) {
-      final TDETOOPDataRequestType aRequest = ToopMessageBuilder.createMockRequest (sSenderParticipantID,
-                                                                                         sCountryCode, eDocumentTypeID,
-                                                                                         eProcessID, conceptList);
+      final TDETOOPDataRequestType aRequest = ToopMessageBuilder.createMockRequest (sSenderParticipantID, sCountryCode,
+                                                                                    eDocumentTypeID, eProcessID,
+                                                                                    conceptList);
 
       ToopMessageBuilder.createRequestMessage (aRequest, aBAOS, aSH);
 
@@ -81,6 +81,14 @@ public final class ToopInterfaceClient {
     }
   }
 
+  /**
+   * Create a response, wrap it in an ASiC and send it to DP TOOP Connector
+   * 
+   * @param aResponse
+   *          Response object
+   * @throws IOException
+   *           In case sending or the like fails
+   */
   public static void sendResponseToToopCoonnector (@Nonnull final TDETOOPDataResponseType aResponse) throws IOException {
     final SignatureHelper aSH = new SignatureHelper (new DefaultResourceProvider ().getInputStream (ToopInterfaceConfig.getKeystorePath ()),
                                                      ToopInterfaceConfig.getKeystorePassword (),
