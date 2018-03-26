@@ -124,4 +124,27 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+  
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>de.thetaphi</groupId>
+        <artifactId>forbiddenapis</artifactId>
+        <configuration>
+          <signaturesArtifacts>
+            <signaturesArtifact>
+              <groupId>com.helger</groupId>
+              <artifactId>ph-forbidden-apis</artifactId>
+              <version>1.1.1</version>
+              <type>jar</type>
+              <path>forbidden-apis-java8.txt</path>
+            </signaturesArtifact>
+          </signaturesArtifacts>
+          <excludes>
+          </excludes>
+        </configuration>
+        <!-- local executions are ignored -->
+      </plugin>
+    </plugins>
+  </build>
 </project>
