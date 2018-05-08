@@ -28,8 +28,8 @@ import com.helger.commons.io.resourceprovider.DefaultResourceProvider;
 import com.helger.commons.io.stream.NonBlockingByteArrayOutputStream;
 
 import eu.toop.commons.concept.ConceptValue;
-import eu.toop.commons.dataexchange.TDETOOPDataRequestType;
-import eu.toop.commons.dataexchange.TDETOOPDataResponseType;
+import eu.toop.commons.dataexchange.TDETOOPRequestType;
+import eu.toop.commons.dataexchange.TDETOOPResponseType;
 import eu.toop.commons.doctype.EToopDocumentType;
 import eu.toop.commons.doctype.EToopProcess;
 import eu.toop.commons.exchange.ToopMessageBuilder;
@@ -70,9 +70,9 @@ public final class ToopInterfaceClient {
                                                      ToopInterfaceConfig.getKeystoreKeyPassword ());
 
     try (final NonBlockingByteArrayOutputStream aBAOS = new NonBlockingByteArrayOutputStream ()) {
-      final TDETOOPDataRequestType aRequest = ToopMessageBuilder.createMockRequest (aSenderParticipantID, sDestCountryCode,
-                                                                                    eDocumentTypeID, eProcessID,
-                                                                                    conceptList);
+      final TDETOOPRequestType aRequest = ToopMessageBuilder.createMockRequest (aSenderParticipantID, sDestCountryCode,
+                                                                                eDocumentTypeID, eProcessID,
+                                                                                conceptList);
 
       ToopMessageBuilder.createRequestMessage (aRequest, aBAOS, aSH);
 
@@ -90,7 +90,7 @@ public final class ToopInterfaceClient {
    * @throws IOException
    *           In case sending or the like fails
    */
-  public static void sendResponseToToopConnector (@Nonnull final TDETOOPDataResponseType aResponse) throws IOException {
+  public static void sendResponseToToopConnector (@Nonnull final TDETOOPResponseType aResponse) throws IOException {
     final SignatureHelper aSH = new SignatureHelper (new DefaultResourceProvider ().getInputStream (ToopInterfaceConfig.getKeystorePath ()),
                                                      ToopInterfaceConfig.getKeystorePassword (),
                                                      ToopInterfaceConfig.getKeystoreKeyAlias (),

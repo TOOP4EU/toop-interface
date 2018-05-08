@@ -19,12 +19,12 @@ import java.io.IOException;
 
 import javax.annotation.Nonnull;
 
-import eu.toop.commons.dataexchange.TDETOOPDataRequestType;
+import eu.toop.commons.dataexchange.TDETOOPRequestType;
 
 /**
  * This interface must be implemented by DP receiving components to retrieve
  * incoming requests (step 2/4). The content of the request is an ASiC archive
- * containing a {@link TDETOOPDataRequestType}.
+ * containing a {@link TDETOOPRequestType}.
  *
  * @author Anton
  * @author Philip Helger
@@ -38,5 +38,5 @@ public interface IToopInterfaceDP {
    * @throws IOException
    *           in case of processing errors
    */
-  void onToopRequest (@Nonnull TDETOOPDataRequestType aRequest) throws IOException;
+  void onToopRequest (@Nonnull TDETOOPRequestType aRequest) throws IOException;
 }

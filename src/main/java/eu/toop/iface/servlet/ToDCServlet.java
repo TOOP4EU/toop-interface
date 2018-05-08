@@ -27,7 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import eu.toop.commons.dataexchange.TDETOOPDataResponseType;
+import eu.toop.commons.dataexchange.TDETOOPResponseType;
 import eu.toop.commons.exchange.ToopMessageBuilder;
 import eu.toop.iface.IToopInterfaceDC;
 import eu.toop.iface.ToopInterfaceManager;
@@ -35,8 +35,8 @@ import eu.toop.iface.ToopInterfaceManager;
 /**
  * This servlet can be included in Java DC implementations to receive messages
  * from the MP (step 4/4). It should read the received ASiC container and
- * extract the {@link TDETOOPDataResponseType} object. This is than forwarded to
- * the {@link IToopInterfaceDC} implementation registered in
+ * extract the {@link TDETOOPResponseType} object. This is than forwarded to the
+ * {@link IToopInterfaceDC} implementation registered in
  * {@link ToopInterfaceManager}.
  *
  * @author Philip Helger
@@ -49,7 +49,7 @@ public class ToDCServlet extends HttpServlet {
   protected void doPost (@Nonnull final HttpServletRequest aHttpServletRequest,
                          @Nonnull final HttpServletResponse aHttpServletResponse) throws ServletException, IOException {
     // Parse ASiC
-    final TDETOOPDataResponseType aResponseMsg = ToopMessageBuilder.parseResponseMessage (aHttpServletRequest.getInputStream ());
+    final TDETOOPResponseType aResponseMsg = ToopMessageBuilder.parseResponseMessage (aHttpServletRequest.getInputStream ());
     if (aResponseMsg == null) {
       // The message content is invalid
       s_aLogger.error ("The request does not contain an ASiC archive or the ASiC archive does not contain a TOOP Response Message!");
