@@ -27,11 +27,11 @@ import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.io.resourceprovider.DefaultResourceProvider;
 import com.helger.commons.io.stream.NonBlockingByteArrayOutputStream;
 
+import eu.toop.commons.codelist.EPredefinedDocumentTypeIdentifier;
+import eu.toop.commons.codelist.EPredefinedProcessIdentifier;
 import eu.toop.commons.concept.ConceptValue;
 import eu.toop.commons.dataexchange.TDETOOPRequestType;
 import eu.toop.commons.dataexchange.TDETOOPResponseType;
-import eu.toop.commons.doctype.EToopDocumentType;
-import eu.toop.commons.doctype.EToopProcess;
 import eu.toop.commons.exchange.ToopMessageBuilder;
 import eu.toop.iface.util.HttpClientInvoker;
 import oasis.names.specification.ubl.schema.xsd.unqualifieddatatypes_21.IdentifierType;
@@ -61,8 +61,8 @@ public final class ToopInterfaceClient {
    */
   public static void createRequestAndSendToToopConnector (@Nonnull @Nonempty final IdentifierType aSenderParticipantID,
                                                           @Nonnull @Nonempty final String sDestCountryCode,
-                                                          @Nonnull final EToopDocumentType eDocumentTypeID,
-                                                          @Nonnull final EToopProcess eProcessID,
+                                                          @Nonnull final EPredefinedDocumentTypeIdentifier eDocumentTypeID,
+                                                          @Nonnull final EPredefinedProcessIdentifier eProcessID,
                                                           @Nullable final List<? extends ConceptValue> conceptList) throws IOException {
     final SignatureHelper aSH = new SignatureHelper (new DefaultResourceProvider ().getInputStream (ToopInterfaceConfig.getKeystorePath ()),
                                                      ToopInterfaceConfig.getKeystorePassword (),
