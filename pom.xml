@@ -16,9 +16,7 @@
     limitations under the License.
 
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>eu.toop</groupId>
@@ -27,7 +25,7 @@
   </parent>
   <groupId>eu.toop</groupId>
   <artifactId>toop-interface</artifactId>
-  <version>0.9.0-SNAPSHOT</version>
+  <version>0.9.0</version>
   <name>toop-interface</name>
   <url>https://github.com/toop4eu/toop-interface</url>
   <inceptionYear>2018</inceptionYear>
@@ -44,7 +42,7 @@
     <connection>scm:git:git@github.com:toop4eu/toop-interface.git</connection>
     <developerConnection>scm:git:git@github.com:toop4eu/toop-interface.git</developerConnection>
     <url>http://github.com/toop4eu/toop-interface</url>
-    <tag>HEAD</tag>
+    <tag>toop-interface-0.9.0</tag>
   </scm>
 
   <organization>
