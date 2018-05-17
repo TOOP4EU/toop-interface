@@ -30,6 +30,7 @@ import com.helger.commons.io.stream.NonBlockingByteArrayOutputStream;
 import eu.toop.commons.codelist.EPredefinedDocumentTypeIdentifier;
 import eu.toop.commons.codelist.EPredefinedProcessIdentifier;
 import eu.toop.commons.concept.ConceptValue;
+import eu.toop.commons.dataexchange.TDEDataRequestSubjectType;
 import eu.toop.commons.dataexchange.TDETOOPRequestType;
 import eu.toop.commons.dataexchange.TDETOOPResponseType;
 import eu.toop.commons.exchange.ToopMessageBuilder;
@@ -44,6 +45,8 @@ public final class ToopInterfaceClient {
   /**
    * Execute step 1/4
    *
+   * @param aRequestSubject
+   *          Data request subject. May not be <code>null</code>.
    * @param aSenderParticipantID
    *          Participant ID of the sender as used by R2D2. May not be
    *          <code>null</code>.
@@ -59,7 +62,8 @@ public final class ToopInterfaceClient {
    * @throws IOException
    *           in case of HTTP error
    */
-  public static void createRequestAndSendToToopConnector (@Nonnull @Nonempty final IdentifierType aSenderParticipantID,
+  public static void createRequestAndSendToToopConnector (@Nonnull final TDEDataRequestSubjectType aRequestSubject,
+                                                          @Nonnull @Nonempty final IdentifierType aSenderParticipantID,
                                                           @Nonnull @Nonempty final String sDestCountryCode,
                                                           @Nonnull final EPredefinedDocumentTypeIdentifier eDocumentTypeID,
                                                           @Nonnull final EPredefinedProcessIdentifier eProcessID,
@@ -70,9 +74,10 @@ public final class ToopInterfaceClient {
                                                      ToopInterfaceConfig.getKeystoreKeyPassword ());
 
     try (final NonBlockingByteArrayOutputStream aBAOS = new NonBlockingByteArrayOutputStream ()) {
-      final TDETOOPRequestType aRequest = ToopMessageBuilder.createMockRequest (aSenderParticipantID, sDestCountryCode,
-                                                                                eDocumentTypeID, eProcessID,
-                                                                                conceptList);
+      // TODO this is still mock!
+      final TDETOOPRequestType aRequest = ToopMessageBuilder.createMockRequest (aRequestSubject, aSenderParticipantID,
+                                                                                sDestCountryCode, eDocumentTypeID,
+                                                                                eProcessID, conceptList);
 
       ToopMessageBuilder.createRequestMessage (aRequest, aBAOS, aSH);
 
