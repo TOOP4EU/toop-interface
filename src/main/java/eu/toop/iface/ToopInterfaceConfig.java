@@ -47,7 +47,7 @@ public final class ToopInterfaceConfig {
 
   /**
    * The name of the primary system property which points to the
-   * <code>message-processor.properties</code> files
+   * <code>toop-interface.properties</code> files
    */
   public static final String SYSTEM_PROPERTY_TOOP_MP_SERVER_PROPERTIES_PATH = "toop.interface.properties.path";
 
