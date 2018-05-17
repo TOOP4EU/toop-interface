@@ -27,7 +27,7 @@
   </parent>
   <groupId>eu.toop</groupId>
   <artifactId>toop-interface</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>0.9.0-SNAPSHOT</version>
   <name>toop-interface</name>
   <url>https://github.com/toop4eu/toop-interface</url>
   <inceptionYear>2018</inceptionYear>
@@ -79,7 +79,7 @@
       <dependency>
         <groupId>eu.toop</groupId>
         <artifactId>toop-commons-parent-pom</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>0.9.0</version>
         <scope>import</scope>
         <type>pom</type>
       </dependency>
