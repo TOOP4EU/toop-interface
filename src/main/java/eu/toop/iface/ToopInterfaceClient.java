@@ -57,7 +57,7 @@ public final class ToopInterfaceClient {
    *          Document type ID to request. May not be <code>null</code>.
    * @param eProcessID
    *          Process ID to request. May not be <code>null</code>.
-   * @param conceptList
+   * @param aConceptList
    *          list of concepts to be queried
    * @throws IOException
    *           in case of HTTP error
@@ -67,7 +67,7 @@ public final class ToopInterfaceClient {
                                                           @Nonnull @Nonempty final String sDestCountryCode,
                                                           @Nonnull final EPredefinedDocumentTypeIdentifier eDocumentTypeID,
                                                           @Nonnull final EPredefinedProcessIdentifier eProcessID,
-                                                          @Nullable final List<? extends ConceptValue> conceptList) throws IOException {
+                                                          @Nullable final List<? extends ConceptValue> aConceptList) throws IOException {
     final SignatureHelper aSH = new SignatureHelper (new DefaultResourceProvider ().getInputStream (ToopInterfaceConfig.getKeystorePath ()),
                                                      ToopInterfaceConfig.getKeystorePassword (),
                                                      ToopInterfaceConfig.getKeystoreKeyAlias (),
@@ -77,7 +77,7 @@ public final class ToopInterfaceClient {
       // TODO this is still mock!
       final TDETOOPRequestType aRequest = ToopMessageBuilder.createMockRequest (aRequestSubject, aSenderParticipantID,
                                                                                 sDestCountryCode, eDocumentTypeID,
-                                                                                eProcessID, conceptList);
+                                                                                eProcessID, aConceptList);
 
       ToopMessageBuilder.createRequestMessage (aRequest, aBAOS, aSH);
 

@@ -37,11 +37,10 @@ public final class ToopInterfaceManager {
   }
 
   @Nonnull
-  public static IToopInterfaceDC getInterfaceDC () throws IllegalStateException {
+  public static IToopInterfaceDC getInterfaceDC () {
     final IToopInterfaceDC ret = s_aRWLock.readLocked ( () -> s_aInterfaceDC);
-    if (ret == null) {
+    if (ret == null)
       throw new IllegalStateException ("No DC interface present!");
-    }
     return ret;
   }
 
@@ -50,11 +49,10 @@ public final class ToopInterfaceManager {
   }
 
   @Nonnull
-  public static IToopInterfaceDP getInterfaceDP () throws IllegalStateException {
+  public static IToopInterfaceDP getInterfaceDP () {
     final IToopInterfaceDP ret = s_aRWLock.readLocked ( () -> s_aInterfaceDP);
-    if (ret == null) {
+    if (ret == null)
       throw new IllegalStateException ("No DP interface present!");
-    }
     return ret;
   }
 
