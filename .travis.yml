@@ -1,3 +1,5 @@
+dist: trusty
+sudo: required
 language: java
 
 env:
@@ -8,7 +10,17 @@ env:
 GSuTTn0Tqx46/tX6cumNUISUjLQyMwO+M1FAI62h6q9rZxXVKT2RsYhPVZTNClVmZoxRoWGOj6hiBNGxz90JfjuAgnrTzLW/+p+DMixlBqV4kmO7JIUpv9L06htoOq5d/jPgggaazf/3vmEVSCxgvr5cn/Ml6lT8
 u78F36QyBisl+3QJI00VUH2gUF2fzeTB/pcjQvcO+1aPLfDtgH+vDOmR8achok9H71Rl/sz3ps65fpupJTW/Qx63KCogwFZNPyYONyuLS+cOGLPL+bunT0b374+CnhwcCkkFQVe4iQtADFlrGjhWo7VayEkH5+TG
 iu6wAG0ScmX06FLTRziqrv/vjdt2FVUgqgwK731UvpGi1kPPVwr0dc="
-   
+
+addons:
+  sonarcloud:
+    organization: "toop4eu"
+    token:
+      secure: "ALh02RTl2NFBIF/lNcOANfBjZHNEQh9Zo6CjgyGneN2wMsOWR8T9WG009kz+4woI523xjh2kXRzZENqA0+01ikye8zK2qo3tUTCb3N6ReShODK+HLQWdO9JD7stiOEXty8Ook8zePit00lgXvPWF5
+G3cwSU1OSoEwa1bFPYHQ66Ps57rayrX5H0GoBfhgztB93l2105mdPuB5D056QIkzHH5cn8QgrjCQe5JDn+AB+9ttjrGvJuCK28uEgTrl2X3J6Jf3/gYq6GXv4X2ZYlQeKTX3WWTItebpGyhPAczk1gkTeE7Uv2LH
+PwTf+R7cxtqOgf2AdO2W9vRoVYTfTO1ID4CaoY4taxPEw1ecqtdjFjIIMNaDLoujnRNmW7OYTwRjHpqnZllELy8JUr7+WyEFrNOqhVo1d0UZudnsySLz3XeACC7KtutbPBdltn8fvK0MUyHJKy2M5IzDg4TYwLvY
++zw9qLCHyakZV5Z2rDVFVvv/fwc3cf+3GjpFf/eTS1lOCANvfUIbxVKdWT/ErnhgXrJmqltfTHmvYn1ejmQRGygTt28sslyc61bZpKXCY+0MN1C+sio4c8BAa0hIDzU9GSh1kfYaTVKGB51WsbEWxBYXt7x+hh+3
+/WCtZvpe5syTm5BHwT73Kqe9r5R+qMd1fKBQT6IBqs2uosy9gaLvO4="
+ 
 jdk:
   - oraclejdk8
   
@@ -16,11 +28,11 @@ install:
   - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V -U -P jdeps
 
 script:
-  -  mvn test -B -P coverage
+  - mvn test -B -P coverage sonar:sonar
   
 cache:
   directories:
-  - $HOME/.m2
+    - $HOME/.m2
 
 after_success:
   - mvn deploy --settings travis-settings.xml -DskipTests=true -B -P travis-deploy
