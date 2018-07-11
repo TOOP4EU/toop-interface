@@ -26,6 +26,8 @@ import org.slf4j.LoggerFactory;
 import com.helger.commons.concurrent.SimpleReadWriteLock;
 import com.helger.commons.debug.GlobalDebug;
 import com.helger.commons.state.ESuccess;
+import com.helger.security.keystore.EKeyStoreType;
+import com.helger.security.keystore.IKeyStoreType;
 import com.helger.settings.exchange.configfile.ConfigFile;
 import com.helger.settings.exchange.configfile.ConfigFileBuilder;
 
@@ -110,6 +112,12 @@ public final class ToopInterfaceConfig {
   @Nullable
   public static String getToopConnectorDPUrl () {
     return getConfigFile ().getAsString ("toop.connector.dp.url");
+  }
+
+  @Nullable
+  public static IKeyStoreType getKeystoreType () {
+    // TODO make configurable
+    return EKeyStoreType.JKS;
   }
 
   @Nullable

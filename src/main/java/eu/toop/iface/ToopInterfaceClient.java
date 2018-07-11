@@ -24,7 +24,6 @@ import javax.annotation.concurrent.ThreadSafe;
 
 import com.helger.asic.SignatureHelper;
 import com.helger.commons.annotation.Nonempty;
-import com.helger.commons.io.resourceprovider.DefaultResourceProvider;
 import com.helger.commons.io.stream.NonBlockingByteArrayOutputStream;
 
 import eu.toop.commons.codelist.EPredefinedDocumentTypeIdentifier;
@@ -68,7 +67,8 @@ public final class ToopInterfaceClient {
                                                           @Nonnull final EPredefinedDocumentTypeIdentifier eDocumentTypeID,
                                                           @Nonnull final EPredefinedProcessIdentifier eProcessID,
                                                           @Nullable final List<? extends ConceptValue> aConceptList) throws IOException {
-    final SignatureHelper aSH = new SignatureHelper (new DefaultResourceProvider ().getInputStream (ToopInterfaceConfig.getKeystorePath ()),
+    final SignatureHelper aSH = new SignatureHelper (ToopInterfaceConfig.getKeystoreType (),
+                                                     ToopInterfaceConfig.getKeystorePath (),
                                                      ToopInterfaceConfig.getKeystorePassword (),
                                                      ToopInterfaceConfig.getKeystoreKeyAlias (),
                                                      ToopInterfaceConfig.getKeystoreKeyPassword ());
@@ -96,7 +96,8 @@ public final class ToopInterfaceClient {
    *           In case sending or the like fails
    */
   public static void sendResponseToToopConnector (@Nonnull final TDETOOPResponseType aResponse) throws IOException {
-    final SignatureHelper aSH = new SignatureHelper (new DefaultResourceProvider ().getInputStream (ToopInterfaceConfig.getKeystorePath ()),
+    final SignatureHelper aSH = new SignatureHelper (ToopInterfaceConfig.getKeystoreType (),
+                                                     ToopInterfaceConfig.getKeystorePath (),
                                                      ToopInterfaceConfig.getKeystorePassword (),
                                                      ToopInterfaceConfig.getKeystoreKeyAlias (),
                                                      ToopInterfaceConfig.getKeystoreKeyPassword ());
