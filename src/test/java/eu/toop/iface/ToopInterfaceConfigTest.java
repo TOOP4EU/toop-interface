@@ -15,16 +15,16 @@
  */
 package eu.toop.iface;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.Assert.assertEquals;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 /**
  * Test class for class {@link ToopInterfaceConfig}.
  *
  * @author Philip Helger
  */
-public class ToopInterfaceConfigTest {
+public final class ToopInterfaceConfigTest {
   @Test
   public void testBasic () {
     assertEquals ("http://mp.elonia.toop:8083/from-dc", ToopInterfaceConfig.getToopConnectorDCUrl ());
