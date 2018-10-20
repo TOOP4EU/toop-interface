@@ -24,9 +24,11 @@ import org.junit.Test;
  *
  * @author Philip Helger
  */
-public final class ToopInterfaceConfigTest {
+public final class ToopInterfaceConfigTest
+{
   @Test
-  public void testBasic () {
+  public void testBasic ()
+  {
     assertEquals ("http://mp.elonia.toop:8083/from-dc", ToopInterfaceConfig.getToopConnectorDCUrl ());
     assertEquals ("http://mp.elonia.toop:8083/from-dp", ToopInterfaceConfig.getToopConnectorDPUrl ());
   }

@@ -38,51 +38,58 @@ import eu.toop.iface.util.HttpClientInvoker;
 import oasis.names.specification.ubl.schema.xsd.unqualifieddatatypes_21.IdentifierType;
 
 @ThreadSafe
-public final class ToopInterfaceClient {
-  private ToopInterfaceClient () {
-  }
+public final class ToopInterfaceClient
+{
+  private ToopInterfaceClient ()
+  {}
 
   /**
    * Execute step 1/4
    *
    * @param aRequestSubject
-   *          Data request subject. May not be <code>null</code>.
+   *        Data request subject. May not be <code>null</code>.
    * @param aSenderParticipantID
-   *          Participant ID of the sender as used by R2D2. May not be
-   *          <code>null</code>.
+   *        Participant ID of the sender as used by R2D2. May not be
+   *        <code>null</code>.
    * @param sDestCountryCode
-   *          Destination country code ID (as in "SE"). May not be
-   *          <code>null</code>.
+   *        Destination country code ID (as in "SE"). May not be
+   *        <code>null</code>.
    * @param eDocumentTypeID
-   *          Document type ID to request. May not be <code>null</code>.
+   *        Document type ID to request. May not be <code>null</code>.
    * @param eProcessID
-   *          Process ID to request. May not be <code>null</code>.
+   *        Process ID to request. May not be <code>null</code>.
    * @param aConceptList
-   *          list of concepts to be queried
+   *        list of concepts to be queried
    * @throws IOException
-   *           in case of HTTP error
+   *         in case of HTTP error
    * @throws ToopErrorException
-   *           For known TOOP errors
+   *         For known TOOP errors
    */
   public static void createRequestAndSendToToopConnector (@Nonnull final TDEDataRequestSubjectType aRequestSubject,
                                                           @Nonnull @Nonempty final IdentifierType aSenderParticipantID,
                                                           @Nonnull @Nonempty final String sDestCountryCode,
                                                           @Nonnull final EPredefinedDocumentTypeIdentifier eDocumentTypeID,
                                                           @Nonnull final EPredefinedProcessIdentifier eProcessID,
-                                                          @Nullable final List<? extends ConceptValue> aConceptList) throws IOException, ToopErrorException {
+                                                          @Nullable final List <? extends ConceptValue> aConceptList) throws IOException,
+                                                                                                                      ToopErrorException
+  {
     final SignatureHelper aSH = new SignatureHelper (ToopInterfaceConfig.getKeystoreType (),
                                                      ToopInterfaceConfig.getKeystorePath (),
                                                      ToopInterfaceConfig.getKeystorePassword (),
                                                      ToopInterfaceConfig.getKeystoreKeyAlias (),
                                                      ToopInterfaceConfig.getKeystoreKeyPassword ());
 
-    try (final NonBlockingByteArrayOutputStream aBAOS = new NonBlockingByteArrayOutputStream ()) {
+    try (final NonBlockingByteArrayOutputStream aBAOS = new NonBlockingByteArrayOutputStream ())
+    {
       // TODO this is still mock!
-      final TDETOOPRequestType aRequest = ToopMessageBuilder.createMockRequest (aRequestSubject, aSenderParticipantID,
-                                                                                sDestCountryCode, eDocumentTypeID,
-                                                                                eProcessID, aConceptList);
+      final TDETOOPRequestType aRequest = ToopMessageBuilder.createMockRequest (aRequestSubject,
+                                                                                aSenderParticipantID,
+                                                                                sDestCountryCode,
+                                                                                eDocumentTypeID,
+                                                                                eProcessID,
+                                                                                aConceptList);
 
-      ToopMessageBuilder.createRequestMessage (aRequest, aBAOS, aSH);
+      ToopMessageBuilder.createRequestMessageAsic (aRequest, aBAOS, aSH);
 
       // Send to DC (see FromDCServlet in toop-connector-webapp)
       final String aFromDCUrl = ToopInterfaceConfig.getToopConnectorDCUrl ();
@@ -94,21 +101,24 @@ public final class ToopInterfaceClient {
    * Create a response, wrap it in an ASiC and send it to DP TOOP Connector
    *
    * @param aResponse
-   *          Response object
+   *        Response object
    * @throws IOException
-   *           In case sending or the like fails
+   *         In case sending or the like fails
    * @throws ToopErrorException
-   *           For known TOOP errors
+   *         For known TOOP errors
    */
-  public static void sendResponseToToopConnector (@Nonnull final TDETOOPResponseType aResponse) throws IOException, ToopErrorException {
+  public static void sendResponseToToopConnector (@Nonnull final TDETOOPResponseType aResponse) throws IOException,
+                                                                                                ToopErrorException
+  {
     final SignatureHelper aSH = new SignatureHelper (ToopInterfaceConfig.getKeystoreType (),
                                                      ToopInterfaceConfig.getKeystorePath (),
                                                      ToopInterfaceConfig.getKeystorePassword (),
                                                      ToopInterfaceConfig.getKeystoreKeyAlias (),
                                                      ToopInterfaceConfig.getKeystoreKeyPassword ());
 
-    try (final NonBlockingByteArrayOutputStream aBAOS = new NonBlockingByteArrayOutputStream ()) {
-      ToopMessageBuilder.createResponseMessage (aResponse, aBAOS, aSH);
+    try (final NonBlockingByteArrayOutputStream aBAOS = new NonBlockingByteArrayOutputStream ())
+    {
+      ToopMessageBuilder.createResponseMessageAsic (aResponse, aBAOS, aSH);
 
       // Send to DP (see FromDPServlet in toop-connector-webapp)
       final String sFromDPUrl = ToopInterfaceConfig.getToopConnectorDPUrl ();

@@ -37,13 +37,16 @@ import com.helger.httpclient.response.ResponseHandlerByteArray;
  * @author Philip Helger
  */
 @Immutable
-public final class HttpClientInvoker {
-  private HttpClientInvoker () {
-  }
+public final class HttpClientInvoker
+{
+  private HttpClientInvoker ()
+  {}
 
-  public static <T> void httpClientCall (@Nonnull final String sDestinationURL, @Nonnull final byte[] aDataToSend,
-                                         @Nonnull final ResponseHandler<T> aResponseHandler,
-                                         @Nonnull final Consumer<? super T> aResultHandler) throws IOException {
+  public static <T> void httpClientCall (@Nonnull final String sDestinationURL,
+                                         @Nonnull final byte [] aDataToSend,
+                                         @Nonnull final ResponseHandler <T> aResponseHandler,
+                                         @Nonnull final Consumer <? super T> aResultHandler) throws IOException
+  {
     ValueEnforcer.notEmpty (sDestinationURL, "DestinationURL");
     ValueEnforcer.notNull (aDataToSend, "DataToSend");
     ValueEnforcer.notNull (aResponseHandler, "ResponseHandler");
@@ -53,7 +56,8 @@ public final class HttpClientInvoker {
     // For proxy etc
     aHCFactory.setUseSystemProperties (true);
 
-    try (final HttpClientManager aMgr = new HttpClientManager (aHCFactory)) {
+    try (final HttpClientManager aMgr = new HttpClientManager (aHCFactory))
+    {
       final HttpPost aPost = new HttpPost (sDestinationURL);
       aPost.setEntity (new ByteArrayEntity (aDataToSend));
 
@@ -63,7 +67,8 @@ public final class HttpClientInvoker {
   }
 
   public static void httpClientCallNoResponse (@Nonnull final String sDestinationURL,
-                                               @Nonnull final byte[] aDataToSend) throws IOException {
+                                               @Nonnull final byte [] aDataToSend) throws IOException
+  {
     ValueEnforcer.notEmpty (sDestinationURL, "DestinationURL");
     ValueEnforcer.notNull (aDataToSend, "DataToSend");
 

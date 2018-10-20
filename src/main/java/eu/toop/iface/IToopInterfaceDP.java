@@ -29,14 +29,15 @@ import eu.toop.commons.dataexchange.TDETOOPRequestType;
  * @author Anton
  * @author Philip Helger
  */
-public interface IToopInterfaceDP {
+public interface IToopInterfaceDP
+{
   /**
    * Invoked every time a TOOP Request Message is received
    *
    * @param aRequest
-   *          Message object. Never <code>null</code>.
+   *        Message object. Never <code>null</code>.
    * @throws IOException
-   *           in case of processing errors
+   *         in case of processing errors
    */
   void onToopRequest (@Nonnull TDETOOPRequestType aRequest) throws IOException;
 }

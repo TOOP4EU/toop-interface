@@ -42,19 +42,24 @@ import eu.toop.iface.ToopInterfaceManager;
  * @author Philip Helger
  */
 @WebServlet ("/to-dc")
-public class ToDCServlet extends HttpServlet {
+public class ToDCServlet extends HttpServlet
+{
   private static final Logger s_aLogger = LoggerFactory.getLogger (ToDCServlet.class);
 
   @Override
   protected void doPost (@Nonnull final HttpServletRequest aHttpServletRequest,
-                         @Nonnull final HttpServletResponse aHttpServletResponse) throws ServletException, IOException {
+                         @Nonnull final HttpServletResponse aHttpServletResponse) throws ServletException, IOException
+  {
     // Parse ASiC
     final TDETOOPResponseType aResponseMsg = ToopMessageBuilder.parseResponseMessage (aHttpServletRequest.getInputStream ());
-    if (aResponseMsg == null) {
+    if (aResponseMsg == null)
+    {
       // The message content is invalid
       s_aLogger.error ("The request does not contain an ASiC archive or the ASiC archive does not contain a TOOP Response Message!");
       aHttpServletResponse.setStatus (HttpServletResponse.SC_BAD_REQUEST);
-    } else {
+    }
+    else
+    {
       // Call callback
       ToopInterfaceManager.getInterfaceDC ().onToopResponse (aResponseMsg);
 

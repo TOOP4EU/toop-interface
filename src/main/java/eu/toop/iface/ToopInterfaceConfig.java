@@ -37,13 +37,15 @@ import com.helger.settings.exchange.configfile.ConfigFileBuilder;
  * @author Philip Helger, BRZ, AT
  */
 @Immutable
-public final class ToopInterfaceConfig {
+public final class ToopInterfaceConfig
+{
   private static final Logger s_aLogger = LoggerFactory.getLogger (ToopInterfaceConfig.class);
   private static final SimpleReadWriteLock s_aRWLock = new SimpleReadWriteLock ();
   @GuardedBy ("s_aRWLock")
   private static ConfigFile s_aConfigFile;
 
-  static {
+  static
+  {
     reloadConfiguration ();
   }
 
@@ -60,22 +62,24 @@ public final class ToopInterfaceConfig {
 
   /**
    * Reload the configuration file. It checks if the system property
-   * {@link #SYSTEM_PROPERTY_TOOP_MP_SERVER_PROPERTIES_PATH} is present and if so,
-   * tries it first, than {@link #PATH_PRIVATE_TOOP_INTERFACE_PROPERTIES} is
+   * {@link #SYSTEM_PROPERTY_TOOP_MP_SERVER_PROPERTIES_PATH} is present and if
+   * so, tries it first, than {@link #PATH_PRIVATE_TOOP_INTERFACE_PROPERTIES} is
    * checked and finally the {@link #PATH_TOOP_INTERFACE_PROPERTIES} path is
    * checked.
    *
    * @return {@link ESuccess}
    */
   @Nonnull
-  public static ESuccess reloadConfiguration () {
+  public static ESuccess reloadConfiguration ()
+  {
     final ConfigFileBuilder aCFB = new ConfigFileBuilder ().addPathFromSystemProperty (SYSTEM_PROPERTY_TOOP_MP_SERVER_PROPERTIES_PATH)
                                                            .addPath (PATH_PRIVATE_TOOP_INTERFACE_PROPERTIES)
                                                            .addPath (PATH_TOOP_INTERFACE_PROPERTIES);
 
     return s_aRWLock.writeLocked ( () -> {
       s_aConfigFile = aCFB.build ();
-      if (s_aConfigFile.isRead ()) {
+      if (s_aConfigFile.isRead ())
+      {
         s_aLogger.info ("Read TOOP interface properties from " + s_aConfigFile.getReadResource ().getPath ());
         return ESuccess.SUCCESS;
       }
@@ -85,58 +89,68 @@ public final class ToopInterfaceConfig {
     });
   }
 
-  private ToopInterfaceConfig () {
-  }
+  private ToopInterfaceConfig ()
+  {}
 
   /**
    * @return The configuration file. Never <code>null</code>.
    */
   @Nonnull
-  public static ConfigFile getConfigFile () {
+  public static ConfigFile getConfigFile ()
+  {
     return s_aRWLock.readLocked ( () -> s_aConfigFile);
   }
 
-  public static boolean isGlobalDebug () {
+  public static boolean isGlobalDebug ()
+  {
     return getConfigFile ().getAsBoolean ("global.debug", GlobalDebug.isDebugMode ());
   }
 
-  public static boolean isGlobalProduction () {
+  public static boolean isGlobalProduction ()
+  {
     return getConfigFile ().getAsBoolean ("global.production", GlobalDebug.isProductionMode ());
   }
 
   @Nullable
-  public static String getToopConnectorDCUrl () {
+  public static String getToopConnectorDCUrl ()
+  {
     return getConfigFile ().getAsString ("toop.connector.dc.url");
   }
 
   @Nullable
-  public static String getToopConnectorDPUrl () {
+  public static String getToopConnectorDPUrl ()
+  {
     return getConfigFile ().getAsString ("toop.connector.dp.url");
   }
 
   @Nullable
-  public static IKeyStoreType getKeystoreType () {
+  public static IKeyStoreType getKeystoreType ()
+  {
     // TODO make configurable
     return EKeyStoreType.JKS;
   }
 
   @Nullable
-  public static String getKeystorePath () {
+  public static String getKeystorePath ()
+  {
     return getConfigFile ().getAsString ("toop.keystore.path");
   }
 
   @Nullable
-  public static String getKeystorePassword () {
+  public static String getKeystorePassword ()
+  {
     return getConfigFile ().getAsString ("toop.keystore.password");
   }
 
   @Nullable
-  public static String getKeystoreKeyAlias () {
+  public static String getKeystoreKeyAlias ()
+  {
     return getConfigFile ().getAsString ("toop.keystore.key.alias");
   }
 
   @Nullable
-  public static String getKeystoreKeyPassword () {
+  public static String getKeystoreKeyPassword ()
+  {
     return getConfigFile ().getAsString ("toop.keystore.key.password");
   }
 }
