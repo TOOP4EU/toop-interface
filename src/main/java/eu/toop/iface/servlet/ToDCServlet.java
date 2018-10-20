@@ -16,6 +16,7 @@
 package eu.toop.iface.servlet;
 
 import java.io.IOException;
+import java.io.Serializable;
 
 import javax.annotation.Nonnull;
 import javax.servlet.ServletException;
@@ -27,6 +28,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import eu.toop.commons.dataexchange.TDETOOPErrorMessageType;
 import eu.toop.commons.dataexchange.TDETOOPResponseType;
 import eu.toop.commons.exchange.ToopMessageBuilder;
 import eu.toop.iface.IToopInterfaceDC;
@@ -44,27 +46,40 @@ import eu.toop.iface.ToopInterfaceManager;
 @WebServlet ("/to-dc")
 public class ToDCServlet extends HttpServlet
 {
-  private static final Logger s_aLogger = LoggerFactory.getLogger (ToDCServlet.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (ToDCServlet.class);
 
   @Override
   protected void doPost (@Nonnull final HttpServletRequest aHttpServletRequest,
                          @Nonnull final HttpServletResponse aHttpServletResponse) throws ServletException, IOException
   {
     // Parse ASiC
-    final TDETOOPResponseType aResponseMsg = ToopMessageBuilder.parseResponseMessage (aHttpServletRequest.getInputStream ());
-    if (aResponseMsg == null)
+    final Serializable aParsedMsg = ToopMessageBuilder.parseRequestOrResponseOrError (aHttpServletRequest.getInputStream ());
+    if (aParsedMsg == null)
     {
       // The message content is invalid
-      s_aLogger.error ("The request does not contain an ASiC archive or the ASiC archive does not contain a TOOP Response Message!");
+      LOGGER.error ("The request does not contain an ASiC archive or the ASiC archive does not contain a TOOP Response Message or a TOOP Error Message!");
       aHttpServletResponse.setStatus (HttpServletResponse.SC_BAD_REQUEST);
     }
     else
     {
       // Call callback
-      ToopInterfaceManager.getInterfaceDC ().onToopResponse (aResponseMsg);
-
-      // Done - no content
-      aHttpServletResponse.setStatus (HttpServletResponse.SC_NO_CONTENT);
+      if (aParsedMsg instanceof TDETOOPResponseType)
+      {
+        ToopInterfaceManager.getInterfaceDC ().onToopResponse ((TDETOOPResponseType) aParsedMsg);
+        aHttpServletResponse.setStatus (HttpServletResponse.SC_ACCEPTED);
+      }
+      else
+        if (aParsedMsg instanceof TDETOOPErrorMessageType)
+        {
+          ToopInterfaceManager.getInterfaceDC ().onToopErrorMessage ((TDETOOPErrorMessageType) aParsedMsg);
+          aHttpServletResponse.setStatus (HttpServletResponse.SC_ACCEPTED);
+        }
+        else
+        {
+          LOGGER.error ("The request contain an ASiC archive but with unsupported payload of type " +
+                        aParsedMsg.getClass ().getName ());
+          aHttpServletResponse.setStatus (HttpServletResponse.SC_BAD_REQUEST);
+        }
     }
   }
 }
