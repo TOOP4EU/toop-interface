@@ -32,6 +32,7 @@ import eu.toop.commons.concept.ConceptValue;
 import eu.toop.commons.dataexchange.TDEDataRequestSubjectType;
 import eu.toop.commons.dataexchange.TDETOOPRequestType;
 import eu.toop.commons.dataexchange.TDETOOPResponseType;
+import eu.toop.commons.error.ToopErrorException;
 import eu.toop.commons.exchange.ToopMessageBuilder;
 import eu.toop.iface.util.HttpClientInvoker;
 import oasis.names.specification.ubl.schema.xsd.unqualifieddatatypes_21.IdentifierType;
@@ -60,13 +61,15 @@ public final class ToopInterfaceClient {
    *          list of concepts to be queried
    * @throws IOException
    *           in case of HTTP error
+   * @throws ToopErrorException
+   *           For known TOOP errors
    */
   public static void createRequestAndSendToToopConnector (@Nonnull final TDEDataRequestSubjectType aRequestSubject,
                                                           @Nonnull @Nonempty final IdentifierType aSenderParticipantID,
                                                           @Nonnull @Nonempty final String sDestCountryCode,
                                                           @Nonnull final EPredefinedDocumentTypeIdentifier eDocumentTypeID,
                                                           @Nonnull final EPredefinedProcessIdentifier eProcessID,
-                                                          @Nullable final List<? extends ConceptValue> aConceptList) throws IOException {
+                                                          @Nullable final List<? extends ConceptValue> aConceptList) throws IOException, ToopErrorException {
     final SignatureHelper aSH = new SignatureHelper (ToopInterfaceConfig.getKeystoreType (),
                                                      ToopInterfaceConfig.getKeystorePath (),
                                                      ToopInterfaceConfig.getKeystorePassword (),
@@ -94,8 +97,10 @@ public final class ToopInterfaceClient {
    *          Response object
    * @throws IOException
    *           In case sending or the like fails
+   * @throws ToopErrorException
+   *           For known TOOP errors
    */
-  public static void sendResponseToToopConnector (@Nonnull final TDETOOPResponseType aResponse) throws IOException {
+  public static void sendResponseToToopConnector (@Nonnull final TDETOOPResponseType aResponse) throws IOException, ToopErrorException {
     final SignatureHelper aSH = new SignatureHelper (ToopInterfaceConfig.getKeystoreType (),
                                                      ToopInterfaceConfig.getKeystorePath (),
                                                      ToopInterfaceConfig.getKeystorePassword (),
