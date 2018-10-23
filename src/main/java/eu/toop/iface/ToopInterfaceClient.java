@@ -65,6 +65,7 @@ public final class ToopInterfaceClient
    * @throws ToopErrorException
    *         For known TOOP errors
    */
+  @Deprecated
   public static void createRequestAndSendToToopConnector (@Nonnull final TDEDataRequestSubjectType aRequestSubject,
                                                           @Nonnull @Nonempty final IdentifierType aSenderParticipantID,
                                                           @Nonnull @Nonempty final String sDestCountryCode,
@@ -72,6 +73,30 @@ public final class ToopInterfaceClient
                                                           @Nonnull final EPredefinedProcessIdentifier eProcessID,
                                                           @Nullable final List <? extends ConceptValue> aConceptList) throws IOException,
                                                                                                                       ToopErrorException
+  {
+    // TODO this is still mock!
+    final TDETOOPRequestType aRequest = ToopMessageBuilder.createMockRequest (aRequestSubject,
+                                                                              aSenderParticipantID,
+                                                                              sDestCountryCode,
+                                                                              eDocumentTypeID,
+                                                                              eProcessID,
+                                                                              aConceptList);
+    sendRequestToToopConnector (aRequest);
+  }
+
+  /**
+   * Create a request, wrap it in an ASiC and send it to DP TOOP Connector
+   *
+   * @param aRequest
+   *        Request object
+   * @throws IOException
+   *         In case sending or the like fails
+   * @throws ToopErrorException
+   *         For known TOOP errors
+   * @since 0.9.2
+   */
+  public static void sendRequestToToopConnector (@Nonnull final TDETOOPRequestType aRequest) throws IOException,
+                                                                                             ToopErrorException
   {
     final SignatureHelper aSH = new SignatureHelper (ToopInterfaceConfig.getKeystoreType (),
                                                      ToopInterfaceConfig.getKeystorePath (),
@@ -81,14 +106,6 @@ public final class ToopInterfaceClient
 
     try (final NonBlockingByteArrayOutputStream aBAOS = new NonBlockingByteArrayOutputStream ())
     {
-      // TODO this is still mock!
-      final TDETOOPRequestType aRequest = ToopMessageBuilder.createMockRequest (aRequestSubject,
-                                                                                aSenderParticipantID,
-                                                                                sDestCountryCode,
-                                                                                eDocumentTypeID,
-                                                                                eProcessID,
-                                                                                aConceptList);
-
       ToopMessageBuilder.createRequestMessageAsic (aRequest, aBAOS, aSH);
 
       // Send to DC (see FromDCServlet in toop-connector-webapp)

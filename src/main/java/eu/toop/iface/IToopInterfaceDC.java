@@ -50,6 +50,7 @@ public interface IToopInterfaceDC
    *        Message object. Never <code>null</code>.
    * @throws IOException
    *         in case of processing errors
+   * @since 0.9.2
    */
   void onToopErrorMessage (@Nonnull TDETOOPErrorMessageType aErrorMessage) throws IOException;
 }
