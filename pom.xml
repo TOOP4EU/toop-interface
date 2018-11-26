@@ -62,21 +62,21 @@
       <dependency>
         <groupId>com.helger</groupId>
         <artifactId>ph-commons-parent-pom</artifactId>
-        <version>9.1.8</version>
+        <version>9.2.0</version>
         <scope>import</scope>
         <type>pom</type>
       </dependency>
       <dependency>
         <groupId>com.helger</groupId>
         <artifactId>ph-web-parent-pom</artifactId>
-        <version>9.0.5</version>
+        <version>9.1.0</version>
         <scope>import</scope>
         <type>pom</type>
       </dependency>
       <dependency>
         <groupId>eu.toop</groupId>
         <artifactId>toop-commons-parent-pom</artifactId>
-        <version>0.9.2</version>
+        <version>0.9.3-SNAPSHOT</version>
         <scope>import</scope>
         <type>pom</type>
       </dependency>
@@ -134,7 +134,7 @@
               <artifactId>ph-forbidden-apis</artifactId>
               <version>1.1.1</version>
               <type>jar</type>
-              <path>forbidden-apis-java8.txt</path>
+              <path>forbidden-apis-java9.txt</path>
             </signaturesArtifact>
           </signaturesArtifacts>
           <excludes>
