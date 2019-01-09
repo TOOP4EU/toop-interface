@@ -19,7 +19,7 @@ import java.io.IOException;
 
 import javax.annotation.Nonnull;
 
-import eu.toop.commons.dataexchange.TDETOOPResponseType;
+import eu.toop.commons.dataexchange.v120.TDETOOPResponseType;
 
 /**
  * This interface must be implemented by DC receiving components to retrieve
