@@ -157,9 +157,14 @@ public final class ToopInterfaceConfig
     return getConfigFile ().getAsString ("toop.keystore.key.password");
   }
 
+  public static boolean isUseHttpSystemProperties ()
+  {
+    return getConfigFile ().getAsBoolean ("toop.http.usesysprops", false);
+  }
+
   public static boolean isProxyServerEnabled ()
   {
-    return getConfigFile ().getAsBoolean ("toop.proxy.enabled");
+    return getConfigFile ().getAsBoolean ("toop.proxy.enabled", false);
   }
 
   @Nullable
@@ -173,5 +178,10 @@ public final class ToopInterfaceConfig
   public static int getProxyServerPort ()
   {
     return getConfigFile ().getAsInt ("toop.proxy.port", -1);
+  }
+
+  public static boolean isTLSTrustAll ()
+  {
+    return getConfigFile ().getAsBoolean ("toop.tls.trustall", false);
   }
 }

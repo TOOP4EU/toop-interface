@@ -15,8 +15,11 @@
  */
 package eu.toop.iface.util;
 
+import java.security.GeneralSecurityException;
+
 import org.apache.http.HttpHost;
 
+import com.helger.commons.exception.InitializationException;
 import com.helger.httpclient.HttpClientFactory;
 
 import eu.toop.iface.ToopInterfaceConfig;
@@ -30,13 +33,31 @@ public final class TCHttpClientFactory extends HttpClientFactory
 {
   public TCHttpClientFactory ()
   {
-    // For proxy etc
-    setUseSystemProperties (true);
-
-    // Add settings from configuration file here centrally
-    if (ToopInterfaceConfig.isProxyServerEnabled ())
+    if (ToopInterfaceConfig.isUseHttpSystemProperties ())
     {
-      setProxy (new HttpHost (ToopInterfaceConfig.getProxyServerAddress (), ToopInterfaceConfig.getProxyServerPort ()));
+      // For proxy etc
+      setUseSystemProperties (true);
+    }
+    else
+    {
+      // Add settings from configuration file here centrally
+      if (ToopInterfaceConfig.isProxyServerEnabled ())
+      {
+        setProxy (new HttpHost (ToopInterfaceConfig.getProxyServerAddress (),
+                                ToopInterfaceConfig.getProxyServerPort ()));
+      }
+
+      // Disable SSL checks?
+      if (ToopInterfaceConfig.isTLSTrustAll ())
+        try
+        {
+          setSSLContextTrustAll ();
+          setHostnameVerifierVerifyAll ();
+        }
+        catch (final GeneralSecurityException ex)
+        {
+          throw new InitializationException (ex);
+        }
     }
   }
 }
