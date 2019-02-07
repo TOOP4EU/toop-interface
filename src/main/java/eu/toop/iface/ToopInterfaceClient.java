@@ -23,6 +23,7 @@ import javax.annotation.Nullable;
 import javax.annotation.concurrent.ThreadSafe;
 
 import com.helger.asic.SignatureHelper;
+import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.io.stream.NonBlockingByteArrayOutputStream;
 
@@ -85,10 +86,11 @@ public final class ToopInterfaceClient
   }
 
   /**
-   * Create a request, wrap it in an ASiC and send it to DP TOOP Connector
+   * Create a request, wrap it in an ASiC and send it to DP TOOP Connector, using
+   * the configured connector URL.
    *
    * @param aRequest
-   *        Request object
+   *        Request object. May not be <code>null</code>.
    * @throws IOException
    *         In case sending or the like fails
    * @throws ToopErrorException
@@ -98,6 +100,30 @@ public final class ToopInterfaceClient
   public static void sendRequestToToopConnector (@Nonnull final TDETOOPRequestType aRequest) throws IOException,
                                                                                              ToopErrorException
   {
+    sendRequestToToopConnector (aRequest, ToopInterfaceConfig.getToopConnectorDCUrl ());
+  }
+
+  /**
+   * Create a request, wrap it in an ASiC and send it to DP TOOP Connector, using
+   * the provided URL.
+   *
+   * @param aRequest
+   *        Request object. May not be <code>null</code>.
+   * @param sTargetURL
+   *        Target URL. May not be <code>null</code>.
+   * @throws IOException
+   *         In case sending or the like fails
+   * @throws ToopErrorException
+   *         For known TOOP errors
+   * @since 0.10.0
+   */
+  public static void sendRequestToToopConnector (@Nonnull final TDETOOPRequestType aRequest,
+                                                 @Nonnull final String sTargetURL) throws IOException,
+                                                                                   ToopErrorException
+  {
+    ValueEnforcer.notNull (aRequest, "Request");
+    ValueEnforcer.notNull (sTargetURL, "TargetURL");
+
     final SignatureHelper aSH = new SignatureHelper (ToopInterfaceConfig.getKeystoreType (),
                                                      ToopInterfaceConfig.getKeystorePath (),
                                                      ToopInterfaceConfig.getKeystorePassword (),
@@ -109,16 +135,16 @@ public final class ToopInterfaceClient
       ToopMessageBuilder.createRequestMessageAsic (aRequest, aBAOS, aSH);
 
       // Send to DC (see FromDCServlet in toop-connector-webapp)
-      final String aFromDCUrl = ToopInterfaceConfig.getToopConnectorDCUrl ();
-      HttpClientInvoker.httpClientCallNoResponse (aFromDCUrl, aBAOS.toByteArray ());
+      HttpClientInvoker.httpClientCallNoResponse (sTargetURL, aBAOS.toByteArray ());
     }
   }
 
   /**
-   * Create a response, wrap it in an ASiC and send it to DP TOOP Connector
+   * Create a response, wrap it in an ASiC and send it to DP TOOP Connector, using
+   * the configured connector URL.
    *
    * @param aResponse
-   *        Response object
+   *        Response object. May not be <code>null</code>.
    * @throws IOException
    *         In case sending or the like fails
    * @throws ToopErrorException
@@ -127,6 +153,30 @@ public final class ToopInterfaceClient
   public static void sendResponseToToopConnector (@Nonnull final TDETOOPResponseType aResponse) throws IOException,
                                                                                                 ToopErrorException
   {
+    sendResponseToToopConnector (aResponse, ToopInterfaceConfig.getToopConnectorDPUrl ());
+  }
+
+  /**
+   * Create a response, wrap it in an ASiC and send it to DP TOOP Connector, using
+   * the provided URL.
+   *
+   * @param aResponse
+   *        Response object. May not be <code>null</code>.
+   * @param sTargetURL
+   *        Target URL. May not be <code>null</code>.
+   * @throws IOException
+   *         In case sending or the like fails
+   * @throws ToopErrorException
+   *         For known TOOP errors
+   * @since 0.10.0
+   */
+  public static void sendResponseToToopConnector (@Nonnull final TDETOOPResponseType aResponse,
+                                                  @Nonnull final String sTargetURL) throws IOException,
+                                                                                    ToopErrorException
+  {
+    ValueEnforcer.notNull (aResponse, "Response");
+    ValueEnforcer.notNull (sTargetURL, "TargetURL");
+
     final SignatureHelper aSH = new SignatureHelper (ToopInterfaceConfig.getKeystoreType (),
                                                      ToopInterfaceConfig.getKeystorePath (),
                                                      ToopInterfaceConfig.getKeystorePassword (),
@@ -138,8 +188,7 @@ public final class ToopInterfaceClient
       ToopMessageBuilder.createResponseMessageAsic (aResponse, aBAOS, aSH);
 
       // Send to DP (see FromDPServlet in toop-connector-webapp)
-      final String sFromDPUrl = ToopInterfaceConfig.getToopConnectorDPUrl ();
-      HttpClientInvoker.httpClientCallNoResponse (sFromDPUrl, aBAOS.toByteArray ());
+      HttpClientInvoker.httpClientCallNoResponse (sTargetURL, aBAOS.toByteArray ());
     }
   }
 }
