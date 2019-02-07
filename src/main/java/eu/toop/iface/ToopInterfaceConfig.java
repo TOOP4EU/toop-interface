@@ -15,6 +15,7 @@
  */
 package eu.toop.iface;
 
+import javax.annotation.CheckForSigned;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.GuardedBy;
@@ -53,17 +54,18 @@ public final class ToopInterfaceConfig
    * The name of the primary system property which points to the
    * <code>toop-interface.properties</code> files
    */
-  public static final String SYSTEM_PROPERTY_TOOP_MP_SERVER_PROPERTIES_PATH = "toop.interface.properties.path";
+  public static final String SYSTEM_PROPERTY_TOOP_INTERFACE_PROPERTIES_PATH = "toop.interface.properties.path";
 
   /** The default primary properties file to load */
   public static final String PATH_PRIVATE_TOOP_INTERFACE_PROPERTIES = "private-toop-interface.properties";
+
   /** The default secondary properties file to load */
   public static final String PATH_TOOP_INTERFACE_PROPERTIES = "toop-interface.properties";
 
   /**
    * Reload the configuration file. It checks if the system property
-   * {@link #SYSTEM_PROPERTY_TOOP_MP_SERVER_PROPERTIES_PATH} is present and if
-   * so, tries it first, than {@link #PATH_PRIVATE_TOOP_INTERFACE_PROPERTIES} is
+   * {@link #SYSTEM_PROPERTY_TOOP_INTERFACE_PROPERTIES_PATH} is present and if so,
+   * tries it first, than {@link #PATH_PRIVATE_TOOP_INTERFACE_PROPERTIES} is
    * checked and finally the {@link #PATH_TOOP_INTERFACE_PROPERTIES} path is
    * checked.
    *
@@ -72,7 +74,8 @@ public final class ToopInterfaceConfig
   @Nonnull
   public static ESuccess reloadConfiguration ()
   {
-    final ConfigFileBuilder aCFB = new ConfigFileBuilder ().addPathFromSystemProperty (SYSTEM_PROPERTY_TOOP_MP_SERVER_PROPERTIES_PATH)
+    final ConfigFileBuilder aCFB = new ConfigFileBuilder ().addPathFromEnvVar ("TOOP_INTERFACE_CONFIG")
+                                                           .addPathFromSystemProperty (SYSTEM_PROPERTY_TOOP_INTERFACE_PROPERTIES_PATH)
                                                            .addPath (PATH_PRIVATE_TOOP_INTERFACE_PROPERTIES)
                                                            .addPath (PATH_TOOP_INTERFACE_PROPERTIES);
 
@@ -152,5 +155,23 @@ public final class ToopInterfaceConfig
   public static String getKeystoreKeyPassword ()
   {
     return getConfigFile ().getAsString ("toop.keystore.key.password");
+  }
+
+  public static boolean isProxyServerEnabled ()
+  {
+    return getConfigFile ().getAsBoolean ("toop.proxy.enabled");
+  }
+
+  @Nullable
+  public static String getProxyServerAddress ()
+  {
+    // Scheme plus hostname or IP address
+    return getConfigFile ().getAsString ("toop.proxy.address");
+  }
+
+  @CheckForSigned
+  public static int getProxyServerPort ()
+  {
+    return getConfigFile ().getAsInt ("toop.proxy.port", -1);
   }
 }

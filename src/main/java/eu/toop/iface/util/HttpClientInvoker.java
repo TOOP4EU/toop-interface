@@ -26,7 +26,6 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ByteArrayEntity;
 
 import com.helger.commons.ValueEnforcer;
-import com.helger.httpclient.HttpClientFactory;
 import com.helger.httpclient.HttpClientManager;
 import com.helger.httpclient.response.ResponseHandlerByteArray;
 
@@ -52,9 +51,8 @@ public final class HttpClientInvoker
     ValueEnforcer.notNull (aResponseHandler, "ResponseHandler");
     ValueEnforcer.notNull (aResultHandler, "ResultHandler");
 
-    final HttpClientFactory aHCFactory = new HttpClientFactory ();
     // For proxy etc
-    aHCFactory.setUseSystemProperties (true);
+    final TCHttpClientFactory aHCFactory = new TCHttpClientFactory ();
 
     try (final HttpClientManager aMgr = new HttpClientManager (aHCFactory))
     {
