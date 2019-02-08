@@ -52,9 +52,6 @@ public final class ToopInterfaceClient
    * @param aSenderParticipantID
    *        Participant ID of the sender as used by R2D2. May not be
    *        <code>null</code>.
-   * @param sDestCountryCode
-   *        Destination country code ID (as in "SE"). May not be
-   *        <code>null</code>.
    * @param eDocumentTypeID
    *        Document type ID to request. May not be <code>null</code>.
    * @param eProcessID
@@ -69,7 +66,6 @@ public final class ToopInterfaceClient
   @Deprecated
   public static void createRequestAndSendToToopConnector (@Nonnull final TDEDataRequestSubjectType aRequestSubject,
                                                           @Nonnull @Nonempty final IdentifierType aSenderParticipantID,
-                                                          @Nonnull @Nonempty final String sDestCountryCode,
                                                           @Nonnull final EPredefinedDocumentTypeIdentifier eDocumentTypeID,
                                                           @Nonnull final EPredefinedProcessIdentifier eProcessID,
                                                           @Nullable final List <? extends ConceptValue> aConceptList) throws IOException,
@@ -78,7 +74,6 @@ public final class ToopInterfaceClient
     // TODO this is still mock!
     final TDETOOPRequestType aRequest = ToopMessageBuilder.createMockRequest (aRequestSubject,
                                                                               aSenderParticipantID,
-                                                                              sDestCountryCode,
                                                                               eDocumentTypeID,
                                                                               eProcessID,
                                                                               aConceptList);
