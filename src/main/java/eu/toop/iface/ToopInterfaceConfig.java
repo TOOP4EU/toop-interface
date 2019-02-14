@@ -40,7 +40,7 @@ import com.helger.settings.exchange.configfile.ConfigFileBuilder;
 @Immutable
 public final class ToopInterfaceConfig
 {
-  private static final Logger s_aLogger = LoggerFactory.getLogger (ToopInterfaceConfig.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (ToopInterfaceConfig.class);
   private static final SimpleReadWriteLock s_aRWLock = new SimpleReadWriteLock ();
   @GuardedBy ("s_aRWLock")
   private static ConfigFile s_aConfigFile;
@@ -83,11 +83,11 @@ public final class ToopInterfaceConfig
       s_aConfigFile = aCFB.build ();
       if (s_aConfigFile.isRead ())
       {
-        s_aLogger.info ("Read TOOP interface properties from " + s_aConfigFile.getReadResource ().getPath ());
+        LOGGER.info ("Read TOOP interface properties from " + s_aConfigFile.getReadResource ().getPath ());
         return ESuccess.SUCCESS;
       }
 
-      s_aLogger.warn ("Failed to read TOOP interface properties from " + aCFB.getAllPaths ());
+      LOGGER.warn ("Failed to read TOOP interface properties from " + aCFB.getAllPaths ());
       return ESuccess.FAILURE;
     });
   }

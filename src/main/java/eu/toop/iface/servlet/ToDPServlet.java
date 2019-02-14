@@ -34,7 +34,7 @@ import eu.toop.iface.ToopInterfaceManager;
 @WebServlet ("/to-dp")
 public class ToDPServlet extends HttpServlet
 {
-  private static final Logger s_aLogger = LoggerFactory.getLogger (ToDPServlet.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (ToDPServlet.class);
 
   @Override
   protected void doPost (@Nonnull final HttpServletRequest aHttpServletRequest,
@@ -45,7 +45,7 @@ public class ToDPServlet extends HttpServlet
     if (aRequestMsg == null)
     {
       // The message content is invalid
-      s_aLogger.error ("The request does not contain an ASiC archive or the ASiC archive does not contain a TOOP Request Message!");
+      LOGGER.error ("The request does not contain an ASiC archive or the ASiC archive does not contain a TOOP Request Message!");
       aHttpServletResponse.setStatus (HttpServletResponse.SC_BAD_REQUEST);
     }
     else
