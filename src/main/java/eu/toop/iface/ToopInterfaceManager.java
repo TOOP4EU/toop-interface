@@ -23,7 +23,7 @@ import com.helger.commons.concurrent.SimpleReadWriteLock;
 
 /**
  * This class only contains the callback interfaces for DC/DP. They must be
- * assigned once on applicaiton startup.
+ * assigned once on application startup.
  *
  * @author Philip Helger
  */
