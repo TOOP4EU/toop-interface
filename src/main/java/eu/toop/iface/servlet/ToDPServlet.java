@@ -28,7 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import eu.toop.commons.dataexchange.v140.TDETOOPRequestType;
-import eu.toop.commons.exchange.ToopMessageBuilder;
+import eu.toop.commons.exchange.ToopMessageBuilder140;
 import eu.toop.iface.ToopInterfaceManager;
 
 @WebServlet ("/to-dp")
@@ -41,7 +41,7 @@ public class ToDPServlet extends HttpServlet
                          @Nonnull final HttpServletResponse aHttpServletResponse) throws ServletException, IOException
   {
     // Parse ASiC
-    final TDETOOPRequestType aRequestMsg = ToopMessageBuilder.parseRequestMessage (aHttpServletRequest.getInputStream ());
+    final TDETOOPRequestType aRequestMsg = ToopMessageBuilder140.parseRequestMessage (aHttpServletRequest.getInputStream ());
     if (aRequestMsg == null)
     {
       // The message content is invalid

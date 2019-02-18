@@ -29,7 +29,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import eu.toop.commons.dataexchange.v140.TDETOOPResponseType;
-import eu.toop.commons.exchange.ToopMessageBuilder;
+import eu.toop.commons.exchange.ToopMessageBuilder140;
 import eu.toop.iface.IToopInterfaceDC;
 import eu.toop.iface.ToopInterfaceManager;
 
@@ -52,7 +52,7 @@ public class ToDCServlet extends HttpServlet
                          @Nonnull final HttpServletResponse aHttpServletResponse) throws ServletException, IOException
   {
     // Parse ASiC
-    final Serializable aParsedMsg = ToopMessageBuilder.parseRequestOrResponse (aHttpServletRequest.getInputStream ());
+    final Serializable aParsedMsg = ToopMessageBuilder140.parseRequestOrResponse (aHttpServletRequest.getInputStream ());
     if (aParsedMsg == null)
     {
       // The message content is invalid

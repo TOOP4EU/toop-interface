@@ -34,7 +34,7 @@ import eu.toop.commons.dataexchange.v140.TDEDataRequestSubjectType;
 import eu.toop.commons.dataexchange.v140.TDETOOPRequestType;
 import eu.toop.commons.dataexchange.v140.TDETOOPResponseType;
 import eu.toop.commons.error.ToopErrorException;
-import eu.toop.commons.exchange.ToopMessageBuilder;
+import eu.toop.commons.exchange.ToopMessageBuilder140;
 import eu.toop.iface.util.HttpClientInvoker;
 import oasis.names.specification.ubl.schema.xsd.unqualifieddatatypes_21.IdentifierType;
 
@@ -78,7 +78,7 @@ public final class ToopInterfaceClient
                                                                                                                       ToopErrorException
   {
     // TODO this is still mock!
-    final TDETOOPRequestType aRequest = ToopMessageBuilder.createMockRequest (aRequestSubject,
+    final TDETOOPRequestType aRequest = ToopMessageBuilder140.createMockRequest (aRequestSubject,
                                                                               sDCCountryCode,
                                                                               sDPCountryCode,
                                                                               aSenderParticipantID,
@@ -135,7 +135,7 @@ public final class ToopInterfaceClient
 
     try (final NonBlockingByteArrayOutputStream aBAOS = new NonBlockingByteArrayOutputStream ())
     {
-      ToopMessageBuilder.createRequestMessageAsic (aRequest, aBAOS, aSH);
+      ToopMessageBuilder140.createRequestMessageAsic (aRequest, aBAOS, aSH);
 
       // Send to DC (see FromDCServlet in toop-connector-webapp)
       HttpClientInvoker.httpClientCallNoResponse (sTargetURL, aBAOS.toByteArray ());
@@ -188,7 +188,7 @@ public final class ToopInterfaceClient
 
     try (final NonBlockingByteArrayOutputStream aBAOS = new NonBlockingByteArrayOutputStream ())
     {
-      ToopMessageBuilder.createResponseMessageAsic (aResponse, aBAOS, aSH);
+      ToopMessageBuilder140.createResponseMessageAsic (aResponse, aBAOS, aSH);
 
       // Send to DP (see FromDPServlet in toop-connector-webapp)
       HttpClientInvoker.httpClientCallNoResponse (sTargetURL, aBAOS.toByteArray ());
