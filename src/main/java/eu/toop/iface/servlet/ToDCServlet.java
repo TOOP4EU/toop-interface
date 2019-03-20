@@ -56,7 +56,7 @@ public class ToDCServlet extends HttpServlet
     if (aParsedMsg == null)
     {
       // The message content is invalid
-      LOGGER.error ("The request does not contain an ASiC archive or the ASiC archive does not contain a TOOP Response Message or a TOOP Error Message!");
+      LOGGER.error ("The /to-dc request does not contain an ASiC archive or the ASiC archive does not contain a TOOP Response Message or a TOOP Error Message!");
       aHttpServletResponse.setStatus (HttpServletResponse.SC_BAD_REQUEST);
     }
     else
@@ -69,7 +69,7 @@ public class ToDCServlet extends HttpServlet
       }
       else
       {
-        LOGGER.error ("The request contain an ASiC archive but with unsupported payload of type " +
+        LOGGER.error ("The /to-dc request contains an ASiC archive but with unsupported payload of type " +
                       aParsedMsg.getClass ().getName ());
         aHttpServletResponse.setStatus (HttpServletResponse.SC_BAD_REQUEST);
       }

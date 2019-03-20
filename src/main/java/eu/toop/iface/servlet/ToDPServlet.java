@@ -46,13 +46,13 @@ public class ToDPServlet extends HttpServlet
     if (aRequestMsg == null)
     {
       // The message content is invalid
-      LOGGER.error ("The request does not contain an ASiC archive or the ASiC archive does not contain a TOOP Request Message!");
+      LOGGER.error ("The /to-dp request does not contain an ASiC archive or the ASiC archive does not contain a TOOP Request Message!");
       aHttpServletResponse.setStatus (HttpServletResponse.SC_BAD_REQUEST);
     }
     else
     {
       if (aRequestMsg instanceof TDETOOPResponseType)
-        LOGGER.warn ("The /to-dp request received a TOOP Response, but needs a TOOP Request only. Please check your endpoint configuration.");
+        LOGGER.warn ("The /to-dp request contains a TOOP Response, but needs a TOOP Request only. Please check your endpoint configuration.");
 
       // Call callback
       ToopInterfaceManager.getInterfaceDP ().onToopRequest (aRequestMsg);
