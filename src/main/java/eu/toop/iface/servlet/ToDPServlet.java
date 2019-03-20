@@ -28,6 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import eu.toop.commons.dataexchange.v140.TDETOOPRequestType;
+import eu.toop.commons.dataexchange.v140.TDETOOPResponseType;
 import eu.toop.commons.exchange.ToopMessageBuilder140;
 import eu.toop.iface.ToopInterfaceManager;
 
@@ -50,6 +51,9 @@ public class ToDPServlet extends HttpServlet
     }
     else
     {
+      if (aRequestMsg instanceof TDETOOPResponseType)
+        LOGGER.warn ("The /to-dp request received a TOOP Response, but needs a TOOP Request only. Please check your endpoint configuration.");
+
       // Call callback
       ToopInterfaceManager.getInterfaceDP ().onToopRequest (aRequestMsg);
 
