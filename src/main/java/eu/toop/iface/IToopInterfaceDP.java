@@ -20,6 +20,7 @@ import java.io.IOException;
 import javax.annotation.Nonnull;
 
 import eu.toop.commons.dataexchange.v140.TDETOOPRequestType;
+import eu.toop.commons.dataexchange.v140.TDETOOPResponseType;
 
 /**
  * This interface must be implemented by DP receiving components to retrieve
@@ -40,4 +41,15 @@ public interface IToopInterfaceDP
    *         in case of processing errors
    */
   void onToopRequest (@Nonnull TDETOOPRequestType aRequest) throws IOException;
+
+  /**
+   * If the TOOP connector cannot handle the TOOP Response in step 3/4 it sends
+   * it back to the DP for correction.
+   *
+   * @param aResponse
+   *        Message object. Never <code>null</code>.
+   * @throws IOException
+   *         in case of processing errors
+   */
+  void onToopErrorResponse (@Nonnull TDETOOPResponseType aResponse) throws IOException;
 }

@@ -16,6 +16,7 @@
 package eu.toop.iface.servlet;
 
 import java.io.IOException;
+import java.io.Serializable;
 
 import javax.annotation.Nonnull;
 import javax.servlet.ServletException;
@@ -42,20 +43,27 @@ public class ToDPServlet extends HttpServlet
                          @Nonnull final HttpServletResponse aHttpServletResponse) throws ServletException, IOException
   {
     // Parse ASiC
-    final TDETOOPRequestType aRequestMsg = ToopMessageBuilder140.parseRequestMessage (aHttpServletRequest.getInputStream ());
-    if (aRequestMsg == null)
+    final Serializable aMsg = ToopMessageBuilder140.parseRequestOrResponse (aHttpServletRequest.getInputStream ());
+    if (aMsg == null)
     {
       // The message content is invalid
-      LOGGER.error ("The /to-dp request does not contain an ASiC archive or the ASiC archive does not contain a TOOP Request Message!");
+      LOGGER.error ("The /to-dp request does not contain an ASiC archive or the ASiC archive does not contain a TOOP Request or TOOP Response Message!");
       aHttpServletResponse.setStatus (HttpServletResponse.SC_BAD_REQUEST);
     }
     else
     {
-      if (aRequestMsg instanceof TDETOOPResponseType)
-        LOGGER.warn ("The /to-dp request contains a TOOP Response, but needs a TOOP Request only. Please check your endpoint configuration.");
-
-      // Call callback
-      ToopInterfaceManager.getInterfaceDP ().onToopRequest (aRequestMsg);
+      if (aMsg instanceof TDETOOPResponseType)
+      {
+        // If the DP is receiving a response, it is because the TC could not
+        // handle the message from step 3/4
+        // Call error callback
+        ToopInterfaceManager.getInterfaceDP ().onToopErrorResponse ((TDETOOPResponseType) aMsg);
+      }
+      else
+      {
+        // Call callback
+        ToopInterfaceManager.getInterfaceDP ().onToopRequest ((TDETOOPRequestType) aMsg);
+      }
 
       // Done - no content
       aHttpServletResponse.setStatus (HttpServletResponse.SC_NO_CONTENT);
