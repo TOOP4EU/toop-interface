@@ -115,6 +115,11 @@ public final class ToopInterfaceConfig
   }
 
   @Nullable
+  public static String getToopConnectorUrl () {
+    return getConfigFile ().getAsString ("toop.connector.url");
+  }
+
+  @Nullable
   public static String getToopConnectorDCUrl ()
   {
     return getConfigFile ().getAsString ("toop.connector.dc.url");

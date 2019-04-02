@@ -205,13 +205,12 @@ public final class ToopInterfaceClient
     }
   }
 
-  public static ResultListType searchDataProvider (@Nonnull final String connectorURL,
-                                                   @Nonnull final String countryStr,
+  public static ResultListType searchDataProvider (@Nonnull final String countryStr,
                                                    @Nullable final String docTypeStr) {
-    ValueEnforcer.notNull (connectorURL, "ConnectorURL");
+
     ValueEnforcer.notNull (countryStr, "CountryStr");
 
-    final StringBuilder query = new StringBuilder(connectorURL + "/search-dp/" + countryStr);
+    final StringBuilder query = new StringBuilder(ToopInterfaceConfig.getToopConnectorUrl () + "/search-dp/" + countryStr);
     if (docTypeStr != null && !docTypeStr.isEmpty()) {
       query.append("/").append(docTypeStr);
     }
