@@ -74,6 +74,13 @@
         <type>pom</type>
       </dependency>
       <dependency>
+        <groupId>com.helger</groupId>
+        <artifactId>peppol-directory-parent-pom</artifactId>
+        <version>0.7.2-SNAPSHOT</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
         <groupId>eu.toop</groupId>
         <artifactId>toop-commons-parent-pom</artifactId>
         <version>0.10.2-SNAPSHOT</version>
