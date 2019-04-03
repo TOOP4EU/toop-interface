@@ -22,6 +22,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.concurrent.Immutable;
 
 import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ByteArrayEntity;
 
@@ -73,5 +74,25 @@ public final class HttpClientInvoker
     httpClientCall (sDestinationURL, aDataToSend, new ResponseHandlerByteArray (), x -> {
       // do nothing
     });
+  }
+
+  public static <T> void httpClientCallGet (@Nonnull final String sDestinationURL,
+                                            @Nonnull final ResponseHandler <T> aResponseHandler,
+                                            @Nonnull final Consumer <? super T> aResultHandler) throws IOException
+  {
+    ValueEnforcer.notEmpty (sDestinationURL, "DestinationURL");
+    ValueEnforcer.notNull (aResponseHandler, "ResponseHandler");
+    ValueEnforcer.notNull (aResultHandler, "ResultHandler");
+
+    // For proxy etc
+    final TCHttpClientFactory aHCFactory = new TCHttpClientFactory ();
+
+    try (final HttpClientManager aMgr = new HttpClientManager (aHCFactory))
+    {
+      final HttpGet aPost = new HttpGet (sDestinationURL);
+
+      final T aResponse = aMgr.execute (aPost, aResponseHandler);
+      aResultHandler.accept (aResponse);
+    }
   }
 }

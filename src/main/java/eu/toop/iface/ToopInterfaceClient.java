@@ -16,9 +16,6 @@
 package eu.toop.iface;
 
 import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -29,8 +26,12 @@ import com.helger.asic.SignatureHelper;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.io.stream.NonBlockingByteArrayOutputStream;
+import com.helger.commons.string.StringHelper;
+import com.helger.commons.wrapper.Wrapper;
+import com.helger.httpclient.response.ResponseHandlerByteArray;
+import com.helger.pd.searchapi.PDSearchAPIReader;
+import com.helger.pd.searchapi.v1.ResultListType;
 
-import com.helger.commons.io.stream.StreamHelper;
 import eu.toop.commons.codelist.EPredefinedDocumentTypeIdentifier;
 import eu.toop.commons.codelist.EPredefinedProcessIdentifier;
 import eu.toop.commons.concept.ConceptValue;
@@ -39,18 +40,12 @@ import eu.toop.commons.dataexchange.v140.TDETOOPRequestType;
 import eu.toop.commons.dataexchange.v140.TDETOOPResponseType;
 import eu.toop.commons.error.ToopErrorException;
 import eu.toop.commons.exchange.ToopMessageBuilder140;
-import eu.toop.iface.dpsearch.ResultListType;
 import eu.toop.iface.util.HttpClientInvoker;
-import eu.toop.iface.util.JaxbMarshaller;
 import oasis.names.specification.ubl.schema.xsd.unqualifieddatatypes_21.IdentifierType;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @ThreadSafe
 public final class ToopInterfaceClient
 {
-  private static final Logger LOGGER = LoggerFactory.getLogger (ToopInterfaceClient.class);
-
   private ToopInterfaceClient ()
   {}
 
@@ -89,18 +84,18 @@ public final class ToopInterfaceClient
   {
     // TODO this is still mock!
     final TDETOOPRequestType aRequest = ToopMessageBuilder140.createMockRequest (aRequestSubject,
-                                                                              sDCCountryCode,
-                                                                              sDPCountryCode,
-                                                                              aSenderParticipantID,
-                                                                              eDocumentTypeID,
-                                                                              eProcessID,
-                                                                              aConceptList);
+                                                                                 sDCCountryCode,
+                                                                                 sDPCountryCode,
+                                                                                 aSenderParticipantID,
+                                                                                 eDocumentTypeID,
+                                                                                 eProcessID,
+                                                                                 aConceptList);
     sendRequestToToopConnector (aRequest);
   }
 
   /**
-   * Create a request, wrap it in an ASiC and send it to DP TOOP Connector, using
-   * the configured connector URL.
+   * Create a request, wrap it in an ASiC and send it to DP TOOP Connector,
+   * using the configured connector URL.
    *
    * @param aRequest
    *        Request object. May not be <code>null</code>.
@@ -117,8 +112,8 @@ public final class ToopInterfaceClient
   }
 
   /**
-   * Create a request, wrap it in an ASiC and send it to DP TOOP Connector, using
-   * the provided URL.
+   * Create a request, wrap it in an ASiC and send it to DP TOOP Connector,
+   * using the provided URL.
    *
    * @param aRequest
    *        Request object. May not be <code>null</code>.
@@ -153,8 +148,8 @@ public final class ToopInterfaceClient
   }
 
   /**
-   * Create a response, wrap it in an ASiC and send it to DP TOOP Connector, using
-   * the configured connector URL.
+   * Create a response, wrap it in an ASiC and send it to DP TOOP Connector,
+   * using the configured connector URL.
    *
    * @param aResponse
    *        Response object. May not be <code>null</code>.
@@ -170,8 +165,8 @@ public final class ToopInterfaceClient
   }
 
   /**
-   * Create a response, wrap it in an ASiC and send it to DP TOOP Connector, using
-   * the provided URL.
+   * Create a response, wrap it in an ASiC and send it to DP TOOP Connector,
+   * using the provided URL.
    *
    * @param aResponse
    *        Response object. May not be <code>null</code>.
@@ -205,30 +200,28 @@ public final class ToopInterfaceClient
     }
   }
 
-  public static ResultListType searchDataProvider (@Nonnull final String countryStr,
-                                                   @Nullable final String docTypeStr) {
+  @Nullable
+  public static ResultListType searchDataProvider (@Nonnull @Nonempty final String sCountryCode,
+                                                   @Nullable final String sDocTypeStr)
+  {
 
-    ValueEnforcer.notNull (countryStr, "CountryStr");
+    ValueEnforcer.notEmpty (sCountryCode, "CountryCode");
 
-    final StringBuilder query = new StringBuilder(ToopInterfaceConfig.getToopConnectorUrl () + "/search-dp/" + countryStr);
-    if (docTypeStr != null && !docTypeStr.isEmpty()) {
-      query.append("/").append(docTypeStr);
+    String sQueryURI = ToopInterfaceConfig.getToopConnectorUrl () + "/search-dp/" + sCountryCode;
+    if (StringHelper.hasText (sDocTypeStr))
+      sQueryURI += '/' + sDocTypeStr;
+
+    try
+    {
+      final Wrapper <ResultListType> aResponse = new Wrapper <> ();
+      HttpClientInvoker.httpClientCallGet (sQueryURI,
+                                           new ResponseHandlerByteArray (),
+                                           aBytes -> aResponse.set (PDSearchAPIReader.resultListV1 ().read (aBytes)));
+      return aResponse.get ();
     }
-
-    try {
-      final HttpURLConnection urlConnection = (HttpURLConnection) new URL (query.toString()).openConnection ();
-      if (urlConnection.getResponseCode () != HttpURLConnection.HTTP_OK) {
-        throw new IllegalStateException ("HTTP status error " + urlConnection.getResponseCode ());
-      }
-
-      final byte[] allBytes = StreamHelper.getAllBytes (urlConnection.getInputStream ());
-      if (allBytes != null) {
-        return JaxbMarshaller.jaxbUnmarshalFromString (new String (allBytes, StandardCharsets.UTF_8));
-      }
-    } catch (Exception e) {
+    catch (final Exception e)
+    {
       throw new IllegalStateException (e);
     }
-
-    return null;
   }
 }
