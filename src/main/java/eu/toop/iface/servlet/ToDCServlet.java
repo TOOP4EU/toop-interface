@@ -25,6 +25,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.helger.commons.collection.impl.CommonsArrayList;
+import com.helger.commons.collection.impl.ICommonsList;
+import eu.toop.commons.exchange.AsicReadEntry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -52,7 +55,8 @@ public class ToDCServlet extends HttpServlet
                          @Nonnull final HttpServletResponse aHttpServletResponse) throws ServletException, IOException
   {
     // Parse ASiC
-    final Serializable aParsedMsg = ToopMessageBuilder140.parseRequestOrResponse (aHttpServletRequest.getInputStream ());
+    final ICommonsList<AsicReadEntry> attachments = new CommonsArrayList<>();
+    final Serializable aParsedMsg = ToopMessageBuilder140.parseRequestOrResponse (aHttpServletRequest.getInputStream (), attachments::add);
     if (aParsedMsg == null)
     {
       // The message content is invalid
@@ -64,7 +68,7 @@ public class ToDCServlet extends HttpServlet
       // Call callback
       if (aParsedMsg instanceof TDETOOPResponseType)
       {
-        ToopInterfaceManager.getInterfaceDC ().onToopResponse ((TDETOOPResponseType) aParsedMsg);
+        ToopInterfaceManager.getInterfaceDC ().onToopResponse ((TDETOOPResponseType) aParsedMsg, attachments);
         aHttpServletResponse.setStatus (HttpServletResponse.SC_ACCEPTED);
       }
       else

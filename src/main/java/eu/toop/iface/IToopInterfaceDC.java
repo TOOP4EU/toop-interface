@@ -19,7 +19,9 @@ import java.io.IOException;
 
 import javax.annotation.Nonnull;
 
+import com.helger.commons.collection.impl.ICommonsList;
 import eu.toop.commons.dataexchange.v140.TDETOOPResponseType;
+import eu.toop.commons.exchange.AsicReadEntry;
 
 /**
  * This interface must be implemented by DC receiving components to retrieve
@@ -40,5 +42,5 @@ public interface IToopInterfaceDC
    * @throws IOException
    *         in case of processing errors
    */
-  void onToopResponse (@Nonnull TDETOOPResponseType aResponse) throws IOException;
+  void onToopResponse (@Nonnull TDETOOPResponseType aResponse, final ICommonsList<AsicReadEntry> attachments) throws IOException;
 }
