@@ -28,8 +28,12 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.helger.commons.collection.impl.CommonsArrayList;
+import com.helger.commons.collection.impl.ICommonsList;
+
 import eu.toop.commons.dataexchange.v140.TDETOOPRequestType;
 import eu.toop.commons.dataexchange.v140.TDETOOPResponseType;
+import eu.toop.commons.exchange.AsicReadEntry;
 import eu.toop.commons.exchange.ToopMessageBuilder140;
 import eu.toop.iface.ToopInterfaceManager;
 
@@ -43,7 +47,9 @@ public class ToDPServlet extends HttpServlet
                          @Nonnull final HttpServletResponse aHttpServletResponse) throws ServletException, IOException
   {
     // Parse ASiC
-    final Serializable aMsg = ToopMessageBuilder140.parseRequestOrResponse (aHttpServletRequest.getInputStream ());
+    final ICommonsList <AsicReadEntry> aAttachments = new CommonsArrayList <> ();
+    final Serializable aMsg = ToopMessageBuilder140.parseRequestOrResponse (aHttpServletRequest.getInputStream (),
+                                                                            aAttachments::add);
     if (aMsg == null)
     {
       // The message content is invalid
@@ -57,12 +63,12 @@ public class ToDPServlet extends HttpServlet
         // If the DP is receiving a response, it is because the TC could not
         // handle the message from step 3/4
         // Call error callback
-        ToopInterfaceManager.getInterfaceDP ().onToopErrorResponse ((TDETOOPResponseType) aMsg);
+        ToopInterfaceManager.getInterfaceDP ().onToopErrorResponse ((TDETOOPResponseType) aMsg, aAttachments);
       }
       else
       {
         // Call callback
-        ToopInterfaceManager.getInterfaceDP ().onToopRequest ((TDETOOPRequestType) aMsg);
+        ToopInterfaceManager.getInterfaceDP ().onToopRequest ((TDETOOPRequestType) aMsg, aAttachments);
       }
 
       // Done - no content
