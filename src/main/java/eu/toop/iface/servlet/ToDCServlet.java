@@ -31,7 +31,11 @@ import eu.toop.commons.exchange.AsicReadEntry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.helger.commons.collection.impl.CommonsArrayList;
+import com.helger.commons.collection.impl.ICommonsList;
+
 import eu.toop.commons.dataexchange.v140.TDETOOPResponseType;
+import eu.toop.commons.exchange.AsicReadEntry;
 import eu.toop.commons.exchange.ToopMessageBuilder140;
 import eu.toop.iface.IToopInterfaceDC;
 import eu.toop.iface.ToopInterfaceManager;
@@ -54,9 +58,10 @@ public class ToDCServlet extends HttpServlet
   protected void doPost (@Nonnull final HttpServletRequest aHttpServletRequest,
                          @Nonnull final HttpServletResponse aHttpServletResponse) throws ServletException, IOException
   {
-    // Parse ASiC
-    final ICommonsList<AsicReadEntry> attachments = new CommonsArrayList<>();
-    final Serializable aParsedMsg = ToopMessageBuilder140.parseRequestOrResponse (aHttpServletRequest.getInputStream (), attachments::add);
+    // Parse ASiC and also keep attachments
+    final ICommonsList <AsicReadEntry> aAttachments = new CommonsArrayList <> ();
+    final Serializable aParsedMsg = ToopMessageBuilder140.parseRequestOrResponse (aHttpServletRequest.getInputStream (),
+                                                                                  aAttachments::add);
     if (aParsedMsg == null)
     {
       // The message content is invalid
@@ -65,10 +70,10 @@ public class ToDCServlet extends HttpServlet
     }
     else
     {
-      // Call callback
       if (aParsedMsg instanceof TDETOOPResponseType)
       {
-        ToopInterfaceManager.getInterfaceDC ().onToopResponse ((TDETOOPResponseType) aParsedMsg, attachments);
+        // Call callback
+        ToopInterfaceManager.getInterfaceDC ().onToopResponse ((TDETOOPResponseType) aParsedMsg, aAttachments);
         aHttpServletResponse.setStatus (HttpServletResponse.SC_ACCEPTED);
       }
       else

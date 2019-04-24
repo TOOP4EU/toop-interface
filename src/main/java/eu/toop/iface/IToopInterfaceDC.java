@@ -20,6 +20,7 @@ import java.io.IOException;
 import javax.annotation.Nonnull;
 
 import com.helger.commons.collection.impl.ICommonsList;
+
 import eu.toop.commons.dataexchange.v140.TDETOOPResponseType;
 import eu.toop.commons.exchange.AsicReadEntry;
 
@@ -39,8 +40,12 @@ public interface IToopInterfaceDC
    *
    * @param aResponse
    *        Message object. Never <code>null</code>.
+   * @param aAttachments
+   *        A non-<code>null</code> but maybe empty list with all attachments of
+   *        the ASiC container.
    * @throws IOException
    *         in case of processing errors
    */
-  void onToopResponse (@Nonnull TDETOOPResponseType aResponse, final ICommonsList<AsicReadEntry> attachments) throws IOException;
+  void onToopResponse (@Nonnull TDETOOPResponseType aResponse,
+                       @Nonnull ICommonsList <AsicReadEntry> aAttachments) throws IOException;
 }

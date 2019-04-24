@@ -19,8 +19,11 @@ import java.io.IOException;
 
 import javax.annotation.Nonnull;
 
+import com.helger.commons.collection.impl.ICommonsList;
+
 import eu.toop.commons.dataexchange.v140.TDETOOPRequestType;
 import eu.toop.commons.dataexchange.v140.TDETOOPResponseType;
+import eu.toop.commons.exchange.AsicReadEntry;
 
 /**
  * This interface must be implemented by DP receiving components to retrieve
@@ -37,10 +40,14 @@ public interface IToopInterfaceDP
    *
    * @param aRequest
    *        Message object. Never <code>null</code>.
+   * @param aAttachments
+   *        A non-<code>null</code> but maybe empty list with all attachments of
+   *        the ASiC container.
    * @throws IOException
    *         in case of processing errors
    */
-  void onToopRequest (@Nonnull TDETOOPRequestType aRequest) throws IOException;
+  void onToopRequest (@Nonnull TDETOOPRequestType aRequest,
+                      @Nonnull ICommonsList <AsicReadEntry> aAttachments) throws IOException;
 
   /**
    * If the TOOP connector cannot handle the TOOP Response in step 3/4 it sends
@@ -48,8 +55,12 @@ public interface IToopInterfaceDP
    *
    * @param aResponse
    *        Message object. Never <code>null</code>.
+   * @param aAttachments
+   *        A non-<code>null</code> but maybe empty list with all attachments of
+   *        the ASiC container.
    * @throws IOException
    *         in case of processing errors
    */
-  void onToopErrorResponse (@Nonnull TDETOOPResponseType aResponse) throws IOException;
+  void onToopErrorResponse (@Nonnull TDETOOPResponseType aResponse,
+                            @Nonnull ICommonsList <AsicReadEntry> aAttachments) throws IOException;
 }
