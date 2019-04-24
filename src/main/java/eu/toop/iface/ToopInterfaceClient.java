@@ -39,6 +39,7 @@ import eu.toop.commons.dataexchange.v140.TDEDataRequestSubjectType;
 import eu.toop.commons.dataexchange.v140.TDETOOPRequestType;
 import eu.toop.commons.dataexchange.v140.TDETOOPResponseType;
 import eu.toop.commons.error.ToopErrorException;
+import eu.toop.commons.exchange.AsicWriteEntry;
 import eu.toop.commons.exchange.ToopMessageBuilder140;
 import eu.toop.iface.util.HttpClientInvoker;
 import oasis.names.specification.ubl.schema.xsd.unqualifieddatatypes_21.IdentifierType;
@@ -179,8 +180,7 @@ public final class ToopInterfaceClient
    * @since 0.10.0
    */
   public static void sendResponseToToopConnector (@Nonnull final TDETOOPResponseType aResponse,
-                                                  @Nonnull final String sTargetURL) throws IOException,
-                                                                                    ToopErrorException
+                                                  @Nonnull final String sTargetURL) throws IOException, ToopErrorException
   {
     ValueEnforcer.notNull (aResponse, "Response");
     ValueEnforcer.notNull (sTargetURL, "TargetURL");
@@ -194,6 +194,29 @@ public final class ToopInterfaceClient
     try (final NonBlockingByteArrayOutputStream aBAOS = new NonBlockingByteArrayOutputStream ())
     {
       ToopMessageBuilder140.createResponseMessageAsic (aResponse, aBAOS, aSH);
+
+      // Send to DP (see FromDPServlet in toop-connector-webapp)
+      HttpClientInvoker.httpClientCallNoResponse (sTargetURL, aBAOS.toByteArray ());
+    }
+  }
+
+  public static void sendResponseToToopConnector (@Nonnull final TDETOOPResponseType aResponse,
+                                                  @Nonnull final String sTargetURL,
+                                                  @Nullable final Iterable <? extends AsicWriteEntry> aAttachments) throws IOException,
+          ToopErrorException
+  {
+    ValueEnforcer.notNull (aResponse, "Response");
+    ValueEnforcer.notNull (sTargetURL, "TargetURL");
+
+    final SignatureHelper aSH = new SignatureHelper (ToopInterfaceConfig.getKeystoreType (),
+            ToopInterfaceConfig.getKeystorePath (),
+            ToopInterfaceConfig.getKeystorePassword (),
+            ToopInterfaceConfig.getKeystoreKeyAlias (),
+            ToopInterfaceConfig.getKeystoreKeyPassword ());
+
+    try (final NonBlockingByteArrayOutputStream aBAOS = new NonBlockingByteArrayOutputStream ())
+    {
+      ToopMessageBuilder140.createResponseMessageAsic (aResponse, aBAOS, aSH, aAttachments);
 
       // Send to DP (see FromDPServlet in toop-connector-webapp)
       HttpClientInvoker.httpClientCallNoResponse (sTargetURL, aBAOS.toByteArray ());
