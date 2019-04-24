@@ -25,9 +25,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.helger.commons.collection.impl.CommonsArrayList;
-import com.helger.commons.collection.impl.ICommonsList;
-import eu.toop.commons.exchange.AsicReadEntry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
