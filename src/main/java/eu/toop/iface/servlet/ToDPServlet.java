@@ -35,6 +35,8 @@ import eu.toop.commons.dataexchange.v140.TDETOOPRequestType;
 import eu.toop.commons.dataexchange.v140.TDETOOPResponseType;
 import eu.toop.commons.exchange.AsicReadEntry;
 import eu.toop.commons.exchange.ToopMessageBuilder140;
+import eu.toop.commons.exchange.ToopRequestWithAttachments140;
+import eu.toop.commons.exchange.ToopResponseWithAttachments140;
 import eu.toop.iface.ToopInterfaceManager;
 
 @WebServlet ("/to-dp")
@@ -63,12 +65,16 @@ public class ToDPServlet extends HttpServlet
         // If the DP is receiving a response, it is because the TC could not
         // handle the message from step 3/4
         // Call error callback
-        ToopInterfaceManager.getInterfaceDP ().onToopErrorResponse ((TDETOOPResponseType) aMsg, aAttachments);
+        final ToopResponseWithAttachments140 aResponse = new ToopResponseWithAttachments140 ((TDETOOPResponseType) aMsg,
+                                                                                       aAttachments);
+        ToopInterfaceManager.getInterfaceDP ().onToopErrorResponse (aResponse);
       }
       else
       {
         // Call callback
-        ToopInterfaceManager.getInterfaceDP ().onToopRequest ((TDETOOPRequestType) aMsg, aAttachments);
+        final ToopRequestWithAttachments140 aRequest = new ToopRequestWithAttachments140 ((TDETOOPRequestType) aMsg,
+                                                                                    aAttachments);
+        ToopInterfaceManager.getInterfaceDP ().onToopRequest (aRequest);
       }
 
       // Done - no content

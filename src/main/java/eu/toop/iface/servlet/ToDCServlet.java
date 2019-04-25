@@ -34,6 +34,7 @@ import com.helger.commons.collection.impl.ICommonsList;
 import eu.toop.commons.dataexchange.v140.TDETOOPResponseType;
 import eu.toop.commons.exchange.AsicReadEntry;
 import eu.toop.commons.exchange.ToopMessageBuilder140;
+import eu.toop.commons.exchange.ToopResponseWithAttachments140;
 import eu.toop.iface.IToopInterfaceDC;
 import eu.toop.iface.ToopInterfaceManager;
 
@@ -70,7 +71,9 @@ public class ToDCServlet extends HttpServlet
       if (aParsedMsg instanceof TDETOOPResponseType)
       {
         // Call callback
-        ToopInterfaceManager.getInterfaceDC ().onToopResponse ((TDETOOPResponseType) aParsedMsg, aAttachments);
+        final ToopResponseWithAttachments140 aResponse = new ToopResponseWithAttachments140 ((TDETOOPResponseType) aParsedMsg,
+                                                                                       aAttachments);
+        ToopInterfaceManager.getInterfaceDC ().onToopResponse (aResponse);
         aHttpServletResponse.setStatus (HttpServletResponse.SC_ACCEPTED);
       }
       else
