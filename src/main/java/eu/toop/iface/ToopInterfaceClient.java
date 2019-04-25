@@ -25,6 +25,7 @@ import javax.annotation.concurrent.ThreadSafe;
 import com.helger.asic.SignatureHelper;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
+import com.helger.commons.collection.impl.ICommonsList;
 import com.helger.commons.io.stream.NonBlockingByteArrayOutputStream;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.wrapper.Wrapper;
@@ -159,10 +160,11 @@ public final class ToopInterfaceClient
    * @throws ToopErrorException
    *         For known TOOP errors
    */
-  public static void sendResponseToToopConnector (@Nonnull final TDETOOPResponseType aResponse) throws IOException,
-                                                                                                ToopErrorException
+  public static void sendResponseToToopConnector (@Nonnull final TDETOOPResponseType aResponse,
+                                                  @Nonnull final ICommonsList <AsicWriteEntry> aWriteAttachments) throws IOException,
+                                                                                                                  ToopErrorException
   {
-    sendResponseToToopConnector (aResponse, ToopInterfaceConfig.getToopConnectorDPUrl ());
+    sendResponseToToopConnector (aResponse, aWriteAttachments, ToopInterfaceConfig.getToopConnectorDPUrl ());
   }
 
   /**
@@ -180,7 +182,9 @@ public final class ToopInterfaceClient
    * @since 0.10.0
    */
   public static void sendResponseToToopConnector (@Nonnull final TDETOOPResponseType aResponse,
-                                                  @Nonnull final String sTargetURL) throws IOException, ToopErrorException
+                                                  @Nonnull final ICommonsList <AsicWriteEntry> aWriteAttachments,
+                                                  @Nonnull final String sTargetURL) throws IOException,
+                                                                                    ToopErrorException
   {
     ValueEnforcer.notNull (aResponse, "Response");
     ValueEnforcer.notNull (sTargetURL, "TargetURL");
@@ -193,7 +197,7 @@ public final class ToopInterfaceClient
 
     try (final NonBlockingByteArrayOutputStream aBAOS = new NonBlockingByteArrayOutputStream ())
     {
-      ToopMessageBuilder140.createResponseMessageAsic (aResponse, aBAOS, aSH);
+      ToopMessageBuilder140.createResponseMessageAsic (aResponse, aBAOS, aSH, aWriteAttachments);
 
       // Send to DP (see FromDPServlet in toop-connector-webapp)
       HttpClientInvoker.httpClientCallNoResponse (sTargetURL, aBAOS.toByteArray ());
@@ -203,16 +207,16 @@ public final class ToopInterfaceClient
   public static void sendResponseToToopConnector (@Nonnull final TDETOOPResponseType aResponse,
                                                   @Nonnull final String sTargetURL,
                                                   @Nullable final Iterable <? extends AsicWriteEntry> aAttachments) throws IOException,
-          ToopErrorException
+                                                                                                                    ToopErrorException
   {
     ValueEnforcer.notNull (aResponse, "Response");
     ValueEnforcer.notNull (sTargetURL, "TargetURL");
 
     final SignatureHelper aSH = new SignatureHelper (ToopInterfaceConfig.getKeystoreType (),
-            ToopInterfaceConfig.getKeystorePath (),
-            ToopInterfaceConfig.getKeystorePassword (),
-            ToopInterfaceConfig.getKeystoreKeyAlias (),
-            ToopInterfaceConfig.getKeystoreKeyPassword ());
+                                                     ToopInterfaceConfig.getKeystorePath (),
+                                                     ToopInterfaceConfig.getKeystorePassword (),
+                                                     ToopInterfaceConfig.getKeystoreKeyAlias (),
+                                                     ToopInterfaceConfig.getKeystoreKeyPassword ());
 
     try (final NonBlockingByteArrayOutputStream aBAOS = new NonBlockingByteArrayOutputStream ())
     {
