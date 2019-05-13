@@ -24,7 +24,7 @@
     <version>1.1.1</version>
   </parent>
   <artifactId>toop-interface</artifactId>
-  <version>0.10.2-SNAPSHOT</version>
+  <version>0.10.2</version>
   <name>toop-interface</name>
   <url>https://github.com/toop4eu/toop-interface</url>
   <inceptionYear>2018</inceptionYear>
@@ -41,7 +41,7 @@
     <connection>scm:git:git@github.com:toop4eu/toop-interface.git</connection>
     <developerConnection>scm:git:git@github.com:toop4eu/toop-interface.git</developerConnection>
     <url>http://github.com/toop4eu/toop-interface</url>
-    <tag>HEAD</tag>
+    <tag>toop-interface-0.10.2</tag>
   </scm>
 
   <organization>
