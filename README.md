@@ -2,7 +2,7 @@
 
 A Java 8+ library providing the fixed interfaces to be used by national DC and DP implementations.
 
-Latest release: **0.10.0** (2019-03-20) (using data model 1.4.0)
+Latest release: **0.10.2** (2019-05-13) (using data model 1.4.0)
 
 # Usage
 
@@ -25,4 +25,3 @@ Binary releases (per version) can be downloaded from:
     
 Source code for the different versions is available at:
 * https://github.com/TOOP4EU/toop-interface/releases/
-    
