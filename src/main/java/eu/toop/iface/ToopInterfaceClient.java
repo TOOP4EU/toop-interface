@@ -25,6 +25,7 @@ import javax.annotation.concurrent.ThreadSafe;
 import com.helger.asic.SignatureHelper;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
+import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.collection.impl.ICommonsList;
 import com.helger.commons.io.stream.NonBlockingByteArrayOutputStream;
 import com.helger.commons.string.StringHelper;
@@ -50,6 +51,17 @@ public final class ToopInterfaceClient
 {
   private ToopInterfaceClient ()
   {}
+
+  @Nonnull
+  @ReturnsMutableCopy
+  private static SignatureHelper createSH ()
+  {
+    return new SignatureHelper (ToopInterfaceConfig.getKeystoreType (),
+                                ToopInterfaceConfig.getKeystorePath (),
+                                ToopInterfaceConfig.getKeystorePassword (),
+                                ToopInterfaceConfig.getKeystoreKeyAlias (),
+                                ToopInterfaceConfig.getKeystoreKeyPassword ());
+  }
 
   /**
    * Execute step 1/4
@@ -134,12 +146,7 @@ public final class ToopInterfaceClient
     ValueEnforcer.notNull (aRequest, "Request");
     ValueEnforcer.notNull (sTargetURL, "TargetURL");
 
-    final SignatureHelper aSH = new SignatureHelper (ToopInterfaceConfig.getKeystoreType (),
-                                                     ToopInterfaceConfig.getKeystorePath (),
-                                                     ToopInterfaceConfig.getKeystorePassword (),
-                                                     ToopInterfaceConfig.getKeystoreKeyAlias (),
-                                                     ToopInterfaceConfig.getKeystoreKeyPassword ());
-
+    final SignatureHelper aSH = createSH ();
     try (final NonBlockingByteArrayOutputStream aBAOS = new NonBlockingByteArrayOutputStream ())
     {
       ToopMessageBuilder140.createRequestMessageAsic (aRequest, aBAOS, aSH);
@@ -189,12 +196,7 @@ public final class ToopInterfaceClient
     ValueEnforcer.notNull (aResponse, "Response");
     ValueEnforcer.notNull (sTargetURL, "TargetURL");
 
-    final SignatureHelper aSH = new SignatureHelper (ToopInterfaceConfig.getKeystoreType (),
-                                                     ToopInterfaceConfig.getKeystorePath (),
-                                                     ToopInterfaceConfig.getKeystorePassword (),
-                                                     ToopInterfaceConfig.getKeystoreKeyAlias (),
-                                                     ToopInterfaceConfig.getKeystoreKeyPassword ());
-
+    final SignatureHelper aSH = createSH ();
     try (final NonBlockingByteArrayOutputStream aBAOS = new NonBlockingByteArrayOutputStream ())
     {
       ToopMessageBuilder140.createResponseMessageAsic (aResponse, aBAOS, aSH, aWriteAttachments);
@@ -212,12 +214,7 @@ public final class ToopInterfaceClient
     ValueEnforcer.notNull (aResponse, "Response");
     ValueEnforcer.notNull (sTargetURL, "TargetURL");
 
-    final SignatureHelper aSH = new SignatureHelper (ToopInterfaceConfig.getKeystoreType (),
-                                                     ToopInterfaceConfig.getKeystorePath (),
-                                                     ToopInterfaceConfig.getKeystorePassword (),
-                                                     ToopInterfaceConfig.getKeystoreKeyAlias (),
-                                                     ToopInterfaceConfig.getKeystoreKeyPassword ());
-
+    final SignatureHelper aSH = createSH ();
     try (final NonBlockingByteArrayOutputStream aBAOS = new NonBlockingByteArrayOutputStream ())
     {
       ToopMessageBuilder140.createResponseMessageAsic (aResponse, aBAOS, aSH, aAttachments);

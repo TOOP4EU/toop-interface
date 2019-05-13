@@ -48,6 +48,9 @@ public class ToDPServlet extends HttpServlet
   protected void doPost (@Nonnull final HttpServletRequest aHttpServletRequest,
                          @Nonnull final HttpServletResponse aHttpServletResponse) throws ServletException, IOException
   {
+    if (LOGGER.isDebugEnabled ())
+      LOGGER.debug ("Received new HTTP POST on /to-dp");
+
     // Parse ASiC
     final ICommonsList <AsicReadEntry> aAttachments = new CommonsArrayList <> ();
     final Serializable aMsg = ToopMessageBuilder140.parseRequestOrResponse (aHttpServletRequest.getInputStream (),
@@ -64,16 +67,23 @@ public class ToDPServlet extends HttpServlet
       {
         // If the DP is receiving a response, it is because the TC could not
         // handle the message from step 3/4
+
+        if (LOGGER.isDebugEnabled ())
+          LOGGER.debug ("Successfully parsed to a TOOP response");
+
         // Call error callback
         final ToopResponseWithAttachments140 aResponse = new ToopResponseWithAttachments140 ((TDETOOPResponseType) aMsg,
-                                                                                       aAttachments);
+                                                                                             aAttachments);
         ToopInterfaceManager.getInterfaceDP ().onToopErrorResponse (aResponse);
       }
       else
       {
+        if (LOGGER.isDebugEnabled ())
+          LOGGER.debug ("Successfully parsed to a TOOP request");
+
         // Call callback
         final ToopRequestWithAttachments140 aRequest = new ToopRequestWithAttachments140 ((TDETOOPRequestType) aMsg,
-                                                                                    aAttachments);
+                                                                                          aAttachments);
         ToopInterfaceManager.getInterfaceDP ().onToopRequest (aRequest);
       }
 

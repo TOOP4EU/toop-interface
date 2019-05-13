@@ -25,6 +25,8 @@ import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ByteArrayEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.httpclient.HttpClientManager;
@@ -39,6 +41,8 @@ import com.helger.httpclient.response.ResponseHandlerByteArray;
 @Immutable
 public final class HttpClientInvoker
 {
+  private static final Logger LOGGER = LoggerFactory.getLogger (HttpClientInvoker.class);
+
   private HttpClientInvoker ()
   {}
 
@@ -51,6 +55,9 @@ public final class HttpClientInvoker
     ValueEnforcer.notNull (aDataToSend, "DataToSend");
     ValueEnforcer.notNull (aResponseHandler, "ResponseHandler");
     ValueEnforcer.notNull (aResultHandler, "ResultHandler");
+
+    if (LOGGER.isDebugEnabled ())
+      LOGGER.debug ("Invoking HTTP POST '" + sDestinationURL + "'");
 
     // For proxy etc
     final TCHttpClientFactory aHCFactory = new TCHttpClientFactory ();
@@ -84,14 +91,17 @@ public final class HttpClientInvoker
     ValueEnforcer.notNull (aResponseHandler, "ResponseHandler");
     ValueEnforcer.notNull (aResultHandler, "ResultHandler");
 
+    if (LOGGER.isDebugEnabled ())
+      LOGGER.debug ("Invoking HTTP GET '" + sDestinationURL + "'");
+
     // For proxy etc
     final TCHttpClientFactory aHCFactory = new TCHttpClientFactory ();
 
     try (final HttpClientManager aMgr = new HttpClientManager (aHCFactory))
     {
-      final HttpGet aPost = new HttpGet (sDestinationURL);
+      final HttpGet aGet = new HttpGet (sDestinationURL);
 
-      final T aResponse = aMgr.execute (aPost, aResponseHandler);
+      final T aResponse = aMgr.execute (aGet, aResponseHandler);
       aResultHandler.accept (aResponse);
     }
   }

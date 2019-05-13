@@ -21,7 +21,7 @@
   <parent>
     <groupId>eu.toop</groupId>
     <artifactId>toop-parent-pom</artifactId>
-    <version>1.1.0</version>
+    <version>1.1.1</version>
   </parent>
   <artifactId>toop-interface</artifactId>
   <version>0.10.2-SNAPSHOT</version>
@@ -53,6 +53,12 @@
     <developer>
       <id>ixuz</id>
       <name>Anton Wiklund</name>
+    </developer>
+    <developer>
+      <id>philip</id>
+      <name>Philip Helger</name>
+      <email>ph(at)helger.com</email>
+      <url>http://www.helger.com</url>
     </developer>
   </developers>
   

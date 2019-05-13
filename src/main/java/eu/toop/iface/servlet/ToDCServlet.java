@@ -56,6 +56,9 @@ public class ToDCServlet extends HttpServlet
   protected void doPost (@Nonnull final HttpServletRequest aHttpServletRequest,
                          @Nonnull final HttpServletResponse aHttpServletResponse) throws ServletException, IOException
   {
+    if (LOGGER.isDebugEnabled ())
+      LOGGER.debug ("Received new HTTP POST on /to-dc");
+
     // Parse ASiC and also keep attachments
     final ICommonsList <AsicReadEntry> aAttachments = new CommonsArrayList <> ();
     final Serializable aParsedMsg = ToopMessageBuilder140.parseRequestOrResponse (aHttpServletRequest.getInputStream (),
@@ -70,9 +73,12 @@ public class ToDCServlet extends HttpServlet
     {
       if (aParsedMsg instanceof TDETOOPResponseType)
       {
+        if (LOGGER.isDebugEnabled ())
+          LOGGER.debug ("Successfully parsed to a TOOP response");
+
         // Call callback
         final ToopResponseWithAttachments140 aResponse = new ToopResponseWithAttachments140 ((TDETOOPResponseType) aParsedMsg,
-                                                                                       aAttachments);
+                                                                                             aAttachments);
         ToopInterfaceManager.getInterfaceDC ().onToopResponse (aResponse);
         aHttpServletResponse.setStatus (HttpServletResponse.SC_ACCEPTED);
       }
