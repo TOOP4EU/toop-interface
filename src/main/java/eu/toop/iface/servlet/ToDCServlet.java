@@ -21,7 +21,6 @@ import java.io.Serializable;
 import javax.annotation.Nonnull;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -48,7 +47,7 @@ import eu.toop.iface.ToopInterfaceManager;
  * @author Philip Helger
  */
 @WebServlet ("/to-dc")
-public class ToDCServlet extends HttpServlet
+public class ToDCServlet extends AbstractToopInterfaceServlet
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (ToDCServlet.class);
 
