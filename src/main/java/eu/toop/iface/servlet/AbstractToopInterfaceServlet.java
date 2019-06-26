@@ -31,9 +31,9 @@ import com.helger.commons.http.CHttp;
  */
 public abstract class AbstractToopInterfaceServlet extends HttpServlet
 {
-  protected static void methodNotSupported (final HttpServletResponse aResp)
+  protected static void methodNotSupported (final HttpServletResponse aResp) throws IOException
   {
-    aResp.setStatus (CHttp.HTTP_METHOD_NOT_ALLOWED);
+    aResp.sendError (CHttp.HTTP_METHOD_NOT_ALLOWED);
   }
 
   @Override
