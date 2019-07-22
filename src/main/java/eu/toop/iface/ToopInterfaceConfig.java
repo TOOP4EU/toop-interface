@@ -64,8 +64,8 @@ public final class ToopInterfaceConfig
 
   /**
    * Reload the configuration file. It checks if the system property
-   * {@link #SYSTEM_PROPERTY_TOOP_INTERFACE_PROPERTIES_PATH} is present and if so,
-   * tries it first, than {@link #PATH_PRIVATE_TOOP_INTERFACE_PROPERTIES} is
+   * {@link #SYSTEM_PROPERTY_TOOP_INTERFACE_PROPERTIES_PATH} is present and if
+   * so, tries it first, than {@link #PATH_PRIVATE_TOOP_INTERFACE_PROPERTIES} is
    * checked and finally the {@link #PATH_TOOP_INTERFACE_PROPERTIES} path is
    * checked.
    *
@@ -115,7 +115,8 @@ public final class ToopInterfaceConfig
   }
 
   @Nullable
-  public static String getToopConnectorUrl () {
+  public static String getToopConnectorUrl ()
+  {
     return getConfigFile ().getAsString ("toop.connector.url");
   }
 
