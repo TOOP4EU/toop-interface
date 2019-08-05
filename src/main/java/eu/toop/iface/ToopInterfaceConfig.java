@@ -135,8 +135,8 @@ public final class ToopInterfaceConfig
   @Nullable
   public static IKeyStoreType getKeystoreType ()
   {
-    // TODO make configurable
-    return EKeyStoreType.JKS;
+    final String sType = getConfigFile ().getAsString ("toop.keystore.type");
+    return EKeyStoreType.getFromIDCaseInsensitiveOrDefault (sType, EKeyStoreType.JKS);
   }
 
   @Nullable
