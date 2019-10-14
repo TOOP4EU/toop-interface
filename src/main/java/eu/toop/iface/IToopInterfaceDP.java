@@ -25,16 +25,16 @@ import eu.toop.commons.exchange.ToopResponseWithAttachments140;
 
 /**
  * This interface must be implemented by DP receiving components to retrieve
- * incoming requests (step 2/4). The content of the request is an ASiC archive
- * containing a {@link TDETOOPRequestType}.
+ * incoming requests (steps 2/4 and 3/4). The content of the request is an ASiC
+ * archive containing a {@link TDETOOPRequestType}.
  *
- * @author Anton
+ * @author Anton Wiklund
  * @author Philip Helger
  */
 public interface IToopInterfaceDP
 {
   /**
-   * Invoked every time a TOOP Request Message is received
+   * Invoked every time a TOOP Request Message is received (in step 2/4)
    *
    * @param aRequest
    *        Message object. Never <code>null</code>.
