@@ -162,14 +162,16 @@ public final class ToopInterfaceClient
    *
    * @param aResponse
    *        Response object. May not be <code>null</code>.
+   * @param aWriteAttachments
+   *        The attachments to be send. May be <code>null</code> or empty.
    * @throws IOException
    *         In case sending or the like fails
    * @throws ToopErrorException
    *         For known TOOP errors
    */
   public static void sendResponseToToopConnector (@Nonnull final TDETOOPResponseType aResponse,
-                                                  @Nonnull final ICommonsList <AsicWriteEntry> aWriteAttachments) throws IOException,
-                                                                                                                  ToopErrorException
+                                                  @Nullable final ICommonsList <AsicWriteEntry> aWriteAttachments) throws IOException,
+                                                                                                                   ToopErrorException
   {
     sendResponseToToopConnector (aResponse, aWriteAttachments, ToopInterfaceConfig.getToopConnectorDPUrl ());
   }
@@ -180,6 +182,8 @@ public final class ToopInterfaceClient
    *
    * @param aResponse
    *        Response object. May not be <code>null</code>.
+   * @param aWriteAttachments
+   *        The attachments to be send. May be <code>null</code> or empty.
    * @param sTargetURL
    *        Target URL. May not be <code>null</code>.
    * @throws IOException
@@ -189,7 +193,7 @@ public final class ToopInterfaceClient
    * @since 0.10.0
    */
   public static void sendResponseToToopConnector (@Nonnull final TDETOOPResponseType aResponse,
-                                                  @Nonnull final ICommonsList <AsicWriteEntry> aWriteAttachments,
+                                                  @Nullable final ICommonsList <AsicWriteEntry> aWriteAttachments,
                                                   @Nonnull final String sTargetURL) throws IOException,
                                                                                     ToopErrorException
   {
