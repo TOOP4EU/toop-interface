@@ -229,15 +229,36 @@ public final class ToopInterfaceClient
   }
 
   @Nullable
-  public static ResultListType searchDataProvider (@Nonnull @Nonempty final String sCountryCode,
-                                                   @Nullable final String sDocTypeStr)
+  public static ResultListType searchDataProviderByCountryCode (@Nonnull @Nonempty final String sCountryCode,
+                                                                @Nullable final String sDocTypeStr)
   {
 
     ValueEnforcer.notEmpty (sCountryCode, "CountryCode");
 
-    String sQueryURI = ToopInterfaceConfig.getToopConnectorUrl () + "/search-dp/" + sCountryCode;
+    String sQueryURI = ToopInterfaceConfig.getToopConnectorUrl () + "/search-dp-by-country/" + sCountryCode;
     if (StringHelper.hasText (sDocTypeStr))
       sQueryURI += '/' + sDocTypeStr;
+
+    try
+    {
+      final Wrapper <ResultListType> aResponse = new Wrapper <> ();
+      HttpClientInvoker.httpClientCallGet (sQueryURI,
+                                           new ResponseHandlerByteArray (),
+                                           aBytes -> aResponse.set (PDSearchAPIReader.resultListV1 ().read (aBytes)));
+      return aResponse.get ();
+    }
+    catch (final Exception e)
+    {
+      throw new IllegalStateException (e);
+    }
+  }
+
+  @Nullable
+  public static ResultListType searchDataProviderByDPType (@Nonnull @Nonempty final String sDPType)
+  {
+    ValueEnforcer.notEmpty (sDPType, "DPType");
+
+    final String sQueryURI = ToopInterfaceConfig.getToopConnectorUrl () + "/search-dp-by-dptype/" + sDPType;
 
     try
     {
