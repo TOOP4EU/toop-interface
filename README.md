@@ -2,7 +2,7 @@
 
 A Java 8+ library providing the fixed interfaces to be used by national DC and DP implementations.
 
-Latest release: **0.10.6-2** (2019-12-05) (using data model 1.4.1-1)
+Latest release: **0.10.7** (2020-01-23) (using data model 1.4.1-2)
 
 # Usage
 
@@ -21,7 +21,7 @@ mvn clean install
 # Download
 
 Binary releases (per version) can be downloaded from:
-* http://repo2.maven.org/maven2/eu/toop/toop-interface/
+* https://repo1.maven.org/maven2/eu/toop/toop-interface/
     
 Source code for the different versions is available at:
 * https://github.com/TOOP4EU/toop-interface/releases/
