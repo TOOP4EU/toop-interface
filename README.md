@@ -2,7 +2,7 @@
 
 A Java 8+ library providing the fixed interfaces to be used by national DC and DP implementations.
 
-Latest release: **0.10.7** (2020-01-23) (using data model 1.4.1-2)
+Latest release: **0.10.8** (2020-01-26) (using data model 1.4.1-2)
 
 # Usage
 
