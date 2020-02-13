@@ -94,6 +94,13 @@
         <scope>import</scope>
       </dependency>
       <dependency>
+        <groupId>com.helger</groupId>
+        <artifactId>ph-ubl-parent-pom</artifactId>
+        <version>6.2.1</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
         <groupId>eu.toop</groupId>
         <artifactId>toop-commons-parent-pom</artifactId>
         <version>0.10.8</version>
