@@ -20,7 +20,7 @@ import java.security.GeneralSecurityException;
 import org.apache.http.HttpHost;
 
 import com.helger.commons.exception.InitializationException;
-import com.helger.httpclient.HttpClientFactory;
+import com.helger.httpclient.HttpClientSettings;
 
 import eu.toop.iface.ToopInterfaceConfig;
 
@@ -29,9 +29,9 @@ import eu.toop.iface.ToopInterfaceConfig;
  *
  * @author Philip Helger
  */
-public final class TCHttpClientFactory extends HttpClientFactory
+public class TCHttpClientSettings extends HttpClientSettings
 {
-  public TCHttpClientFactory ()
+  public TCHttpClientSettings ()
   {
     if (ToopInterfaceConfig.isUseHttpSystemProperties ())
     {
@@ -43,8 +43,8 @@ public final class TCHttpClientFactory extends HttpClientFactory
       // Add settings from configuration file here centrally
       if (ToopInterfaceConfig.isProxyServerEnabled ())
       {
-        setProxy (new HttpHost (ToopInterfaceConfig.getProxyServerAddress (),
-                                ToopInterfaceConfig.getProxyServerPort ()));
+        setProxyHost (new HttpHost (ToopInterfaceConfig.getProxyServerAddress (),
+                                    ToopInterfaceConfig.getProxyServerPort ()));
 
         // Non-proxy hosts
         addNonProxyHostsFromPipeString (ToopInterfaceConfig.getProxyServerNonProxyHosts ());

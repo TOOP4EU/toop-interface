@@ -60,9 +60,7 @@ public final class HttpClientInvoker
       LOGGER.debug ("Invoking HTTP POST '" + sDestinationURL + "'");
 
     // For proxy etc
-    final TCHttpClientFactory aHCFactory = new TCHttpClientFactory ();
-
-    try (final HttpClientManager aMgr = new HttpClientManager (aHCFactory))
+    try (final HttpClientManager aMgr = HttpClientManager.create (new TCHttpClientSettings ()))
     {
       final HttpPost aPost = new HttpPost (sDestinationURL);
       aPost.setEntity (new ByteArrayEntity (aDataToSend));
@@ -95,9 +93,7 @@ public final class HttpClientInvoker
       LOGGER.debug ("Invoking HTTP GET '" + sDestinationURL + "'");
 
     // For proxy etc
-    final TCHttpClientFactory aHCFactory = new TCHttpClientFactory ();
-
-    try (final HttpClientManager aMgr = new HttpClientManager (aHCFactory))
+    try (final HttpClientManager aMgr = HttpClientManager.create (new TCHttpClientSettings ()))
     {
       final HttpGet aGet = new HttpGet (sDestinationURL);
 
