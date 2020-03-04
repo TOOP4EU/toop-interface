@@ -4,6 +4,8 @@ A Java 8+ library providing the fixed interfaces to be used by national DC and D
 
 Latest release: **0.10.8** (2020-01-26) (using data model 1.4.1-2)
 
+# This project is superseded by [TOOP Connector NG](https://github.com/TOOP4EU/toop-connector-ng)
+
 # Usage
 
 This library contains two servlets occupying the paths `/to-dp` and `/to-dc`.
